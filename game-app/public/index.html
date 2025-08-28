@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head><title>Scattergame</title></head>
+  <body>
+    <h1>Scattergame</h1>
+
+    <div id="nameSection">
+      <input id="name" placeholder="Enter your name" />
+      <button id="nameBtn" onclick="joinGame()">Join</button>
+    </div>
+
+    <button id="startBtn" onclick="startGame()" style="display:none;">Start Game</button>
+
+    <div id="answerSection" style="display:none;">
+      <input id="answer" placeholder="Your answer" />
+      <button id="answerBtn" onclick="sendAnswer()">Send</button>
+    </div>
+
+    <p id="playercount">Players: 0</p>
+    <ul id="log"></ul>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="globals.js"></script>
+
+    <script>
+      const socket = io();
+
+      function joinGame() {
+        //check for an actual name:
+        if (document.getElementById("name").value.trim() === "") {
+          alert("Please enter a name.");
+          return;
+        }
+
+        const name = document.getElementById("name").value;
+        socket.emit("joinGame", name);
+
+        //disable name input
+        document.getElementById("nameSection").style.display = "none";
+
+        //show start button
+        document.getElementById("startBtn").style.display = "inline";
+      }
+
+      function startGame() {
+        document.getElementById("startBtn").style.display = "none";
+        document.getElementById("answerSection").style.display = "block";
+      }
+
+      function sendAnswer() {
+        const answer = document.getElementById("answer").value;
+        socket.emit("sendAnswer", answer);
+        document.getElementById("answer").value = "";
+      }
+
+      socket.on("playerJoined", (name) => {
+        document.getElementById("log").innerHTML += `<li>${name} joined</li>`;
+      });
+      socket.on("answerReceived", (data) => {
+        document.getElementById("log").innerHTML += `<li>${data.player}: ${data.answer}</li>`;
+      });
+      socket.on("playerCount", (size) => {
+        document.getElementById("playercount").innerHTML = `Players: ${size}`;
+      });
+    </script>
+  </body>
+</html>
