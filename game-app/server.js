@@ -14,17 +14,18 @@ const io = new Server(server);
 app.use(express.static("public"));
 
 // Track connected players
-const players = new Set();
+const players = new Map();
 
 io.on("connection", (socket) => {
   console.log("a user connected:", socket.id);
 
   socket.on("joinGame", (name) => {
     socket.playerName = name; // store players name
-    players.add(socket.id); // add player on join
+    players.set(socket.id, name); // add player on join
     console.log(`${name} joined`);
-    socket.broadcast.emit("playerJoined", name);
+        socket.broadcast.emit("playerJoined", name); // not needed?
     io.emit("playerCount", players.size); // Send updated count to all clients
+    io.emit("playerList", Array.from(players.values())); // Send full list
   });
 
   socket.on("sendAnswer", (answer) => {
@@ -36,6 +37,12 @@ io.on("connection", (socket) => {
     players.delete(socket.id); // Remove player on disconnect
     console.log("user disconnected:", socket.id);
     io.emit("playerCount", players.size); // Send updated count to all clients
+    io.emit("playerList", Array.from(players.values())); // Update list
+  });
+
+  socket.on("startGame", (name) => {
+    console.log("Game started by", name);
+    io.emit("gameStarted", name);
   });
 });
 
