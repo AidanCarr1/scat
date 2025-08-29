@@ -1,1 +1,0 @@
-//var numberOfPlayers = 0;

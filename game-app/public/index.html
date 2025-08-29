@@ -20,89 +20,14 @@
     <p id="playerCount">Players: 0</p>
     <ul id="playerList"></ul>
 
+    <ul id="log"></ul>
+
     <script src="/socket.io/socket.io.js"></script>
-    <script src="globals.js"></script>
+    <script src="socket.js"></script>
+    <!-- <script src="game.js"></script>
+    <script src="utils.js"></script> -->
+    <script src="input.js"></script> 
+    <script src="output.js"></script>
 
-    <script>
-      const socket = io();
-
-
-      // you joined the game, tell the server
-      function joinGame() {
-        
-        //check for an actual name:
-        if (document.getElementById("name").value.trim() === "") {
-          alert("Please enter a name.");
-          return;
-        }
-
-        // tell server your name
-        const name = document.getElementById("name").value;
-        socket.emit("joinGame", name);
-
-        // disable name input
-        document.getElementById("nameSection").style.display = "none";
-
-        // can only show start button once joined
-        document.getElementById("startBtn").style.display = "inline";
-      }
-
-      // you started the game, tell the server
-      function startGame() {
-        const name = document.getElementById("name").value;
-        socket.emit("startGame", name);
-      }
-
-      // you sent an answer, tell the server
-      function sendAnswer() {
-        const answer = document.getElementById("answer").value;
-        socket.emit("sendAnswer", answer);
-        document.getElementById("answer").value = "";
-      }
-
-      // not needed:
-      // socket.on("playerJoined", (name) => {
-      //   document.getElementById("playerList").innerHTML = "";
-      //   for (const li of document.getElementById("playerList").children) {
-      //     document.getElementById("playerList").innerHTML += `<li>${name}</li>`;
-      //   }
-      // });
-
-
-      // the player list has been updated, update locally
-      socket.on("playerList", (names) => {
-        const ul = document.getElementById("playerList");
-        ul.innerHTML = "";
-        for (const name of names) {
-          ul.innerHTML += `<li>${name}</li>`;
-        }
-      });
-
-      // the player count has been updated, update locally
-      socket.on("playerCount", (size) => {
-        document.getElementById("playerCount").innerHTML = `Players: ${size}`;
-
-        // all game start if 2+ players
-        if (size >= 2) {
-          document.getElementById("startBtn").disabled = false;
-        } else {
-          document.getElementById("startBtn").disabled = true;
-        }
-      });
-
-      // a player started the game, begin
-      socket.on("gameStarted", function(starterName) {
-        document.getElementById("gameStarter").innerHTML = "Game started by " + starterName;
-        document.getElementById("startBtn").style.display = "none";
-        document.getElementById("answerSection").style.display = "block";
-      });
-
-      // a player answered
-      // update here
-      socket.on("answerReceived", (data) => {
-        document.getElementById("log").innerHTML += `<li>${data.player}: ${data.answer}</li>`;
-      });
-
-    </script>
   </body>
 </html>

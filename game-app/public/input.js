@@ -1,0 +1,34 @@
+// Send user data to the server
+
+// you joined the game, tell the server
+function joinGame() {
+
+    //check for an actual name:
+    if (document.getElementById("name").value.trim() === "") {
+        alert("Please enter a name.");
+        return;
+    }
+
+    // tell server your name
+    const name = document.getElementById("name").value;
+    socket.emit("joinGame", name);
+
+    // disable name input
+    document.getElementById("nameSection").style.display = "none";
+
+    // can only show start button once joined
+    document.getElementById("startBtn").style.display = "inline";
+}
+
+// you started the game, tell the server
+function startGame() {
+    const name = document.getElementById("name").value;
+    socket.emit("startGame", name);
+}
+
+// you sent an answer, tell the server
+function sendAnswer() {
+    const answer = document.getElementById("answer").value;
+    socket.emit("sendAnswer", answer);
+    document.getElementById("answer").value = "";
+}
