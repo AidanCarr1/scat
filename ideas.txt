@@ -1,0 +1,38 @@
+LOBBY
+[y] enter name
+[ ] change name
+[y] see all players joining
+[ ] see photos
+[y] click start
+[ ] vote start?
+[ ] profile picture
+
+SETTINGS
+[y] one person picks settings
+[ ] real time update
+[ ] TOGGLE HOST VIEW (JackBoxTV) VS INDIVIDUAL VIEW (Psych)
+    INDIVIDUAL by default
+
+SETTINGS LIST
+[y] number rounds
+[y] time limit
+[ ] toggle custom prompts
+[?] number of prompts (keep classic 12)
+
+DICE ROLL
+[ ] animation?
+
+GAME UI
+[ ] number timer
+[ ] icon timer
+[ ] toggle timer visibilty?
+
+REVEAL UI
+[ ] random order? (pop up with picture)
+[ ] vote only starts if someone disproves of answer
+[ ] must be quick to vote/review
+[ ] repeat button
+[ ] double points button
+
+LEADERBOARD
+[ ] sort by point value
