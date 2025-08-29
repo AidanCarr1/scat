@@ -12,6 +12,7 @@
 socket.on("playerList", (names) => {
     const ul = document.getElementById("playerList");
     ul.innerHTML = "";
+    window.playerNames = names; // Store globally
     for (const name of names) {
         ul.innerHTML += `<li>${name}</li>`;
     }
@@ -30,10 +31,22 @@ socket.on("playerCount", (size) => {
 });
 
 // a player started the game, begin
-socket.on("gameStarted", function(starterName) {
+socket.on("gameStarted", (starterName) => {
+    document.getElementById("lobby").style.display = "none";
+
+    document.getElementById("settings").style.display = "block";
     document.getElementById("gameStarter").innerHTML = "Game started by " + starterName;
     document.getElementById("startBtn").style.display = "none";
     document.getElementById("answerSection").style.display = "block";
+
+    // can only EDIT settings if this client is the starter
+    if (window.localName === starterName) {
+        document.getElementById("setRounds").disabled = false;
+        document.getElementById("setTimeLimit").disabled = false;
+        document.getElementById("saveSettings").disabled = false;
+    } else {
+        //document.getElementById("settings").style.display = "none";
+    }
 });
 
 // a player answered
