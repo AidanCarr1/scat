@@ -27,6 +27,15 @@ function startGame() {
     socket.emit("startGame", name);
 }
 
+// tell server settings numbers
+function inputSettings() {
+    const rounds = document.getElementById("setRounds").value;
+    const timeLimit = document.getElementById("setTimeLimit").value;
+
+    // emit settings
+    socket.emit("inputSettings", { rounds, timeLimit });
+}
+
 // you sent an answer, tell the server
 function sendAnswer() {
     const answer = document.getElementById("answer").value;

@@ -44,6 +44,14 @@ io.on("connection", (socket) => {
     console.log("Game started by", name);
     io.emit("gameStarted", name);
   });
+
+  socket.on("inputSettings", (settings) => {
+    console.log("Settings saved:", settings);
+    // You can store these settings server-side if needed
+
+    // broadcast updated settings to all clients
+    io.emit("outputSettings", settings);
+  });
 });
 
 server.listen(3000, () => {

@@ -54,3 +54,9 @@ socket.on("gameStarted", (starterName) => {
 socket.on("answerReceived", (data) => {
     document.getElementById("log").innerHTML += `<li>${data.player}: ${data.answer}</li>`;
 });
+
+// a player updated settings
+socket.on("outputSettings", (settings) => {
+    document.getElementById("setRounds").value = settings.rounds;
+    document.getElementById("setTimeLimit").value = settings.timeLimit;
+});
