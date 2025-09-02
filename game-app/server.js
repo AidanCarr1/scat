@@ -47,11 +47,22 @@ io.on("connection", (socket) => {
 
   socket.on("inputSettings", (settings) => {
     console.log("Settings saved:", settings);
-    // You can store these settings server-side if needed
+
+    // store these settings server-side if needed
+    maxRounds = settings.rounds;
+    timeLimit = settings.timeLimit;
 
     // broadcast updated settings to all clients
     io.emit("outputSettings", settings);
   });
+
+  socket.on("nextRound", () => {
+    round++;
+    console.log("Next round requested");
+    io.emit("roundAdvanced");
+  });
+
+
 });
 
 server.listen(3000, () => {

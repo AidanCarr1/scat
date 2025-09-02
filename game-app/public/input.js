@@ -36,6 +36,12 @@ function inputSettings() {
     socket.emit("inputSettings", { rounds, timeLimit });
 }
 
+function nextRound() {
+    // update setting one last time
+    inputSettings();
+    //socket.emit("nextRound");
+}
+
 // you sent an answer, tell the server
 function sendAnswer() {
     const answer = document.getElementById("answer").value;

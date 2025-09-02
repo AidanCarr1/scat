@@ -44,6 +44,7 @@ socket.on("gameStarted", (starterName) => {
         document.getElementById("setRounds").disabled = false;
         document.getElementById("setTimeLimit").disabled = false;
         document.getElementById("saveSettings").disabled = false;
+        document.getElementById("startRound").disabled = false;
     } else {
         //document.getElementById("settings").style.display = "none";
     }
