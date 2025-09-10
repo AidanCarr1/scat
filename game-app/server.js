@@ -14,6 +14,9 @@ const io = new Server(server);
 app.use(express.static("public"));
 
 // Track connected players
+const globals = require("./globals.js");
+const { glob } = require("fs");
+const { currentListNumber } = require("./globals.js");
 const players = new Map();
 
 io.on("connection", (socket) => {
@@ -49,17 +52,48 @@ io.on("connection", (socket) => {
     console.log("Settings saved:", settings);
 
     // store these settings server-side if needed
-    maxRounds = settings.rounds;
-    timeLimit = settings.timeLimit;
+    globals.maxRounds = settings.rounds;
+    globals.timeLimit = settings.timeLimit;
 
     // broadcast updated settings to all clients
     io.emit("outputSettings", settings);
   });
 
   socket.on("nextRound", () => {
-    round++;
-    console.log("Next round requested");
-    io.emit("roundAdvanced");
+    globals.currentRound++;
+    // round 1, 2, 3, 4...
+
+    // first round
+    if (globals.currentRound === 1) {
+
+      // shuffle list order
+      globals.listOrder = require("./game").getRandomListOrder();
+      console.log("List order:", globals.listOrder);
+    }
+
+    // note the round number
+    console.log("Start round", globals.currentRound);
+    
+    // if we sill have more rounds to play
+    if (globals.currentRound <= globals.maxRounds) {
+
+      // roll the die
+      globals.currentLetter = require("./game").rollDie();
+      console.log("Letter:", globals.currentLetter);
+
+      // pick the list (using the shuffled number order)
+      globals.currentListNumber = globals.listOrder[globals.currentRound-1];
+      console.log("Using List ", globals.currentListNumber);
+      
+      // populate the actual list of categories:
+      // (use math)
+      // BOOKMARK
+    }
+
+    // all rounds done
+    else {
+      console.log("Game over!");
+    }
   });
 
 

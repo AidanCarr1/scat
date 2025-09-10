@@ -14,6 +14,11 @@ function getRandomListOrder(number) {
     return lists;
 }
 
+module.exports = {
+    rollDie,
+    getRandomListOrder
+};
+
 // TEST
 
 // for (var i = 0; i < 10; i++){

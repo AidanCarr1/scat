@@ -179,3 +179,8 @@ const moreCatergories = [
 "Party themes",
 
 ""];
+
+module.exports = {
+    orignalCatergories,
+    moreCatergories
+};

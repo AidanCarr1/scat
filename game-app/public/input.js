@@ -39,7 +39,7 @@ function inputSettings() {
 function nextRound() {
     // update setting one last time
     inputSettings();
-    //socket.emit("nextRound");
+    socket.emit("nextRound");
 }
 
 // you sent an answer, tell the server
