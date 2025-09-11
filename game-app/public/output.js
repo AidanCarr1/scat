@@ -66,7 +66,7 @@ socket.on("outputSettings", (settings) => {
 socket.on("playRound", (data) => {
 
     // populate the data
-    for (let i = 1; i <= data.CATERGORIES_PER_LIST; i++) {
+    for (let i = 1; i <= data.CATEGORIES_PER_LIST; i++) {
         document.getElementById("cat"+i).innerHTML = data.categories[i-1];
     }
     document.getElementById("round").innerHTML = "Round " + data.round;
