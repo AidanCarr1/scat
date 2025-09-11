@@ -17,6 +17,7 @@ app.use(express.static("public"));
 const globals = require("./globals.js");
 const { glob } = require("fs");
 const { currentListNumber } = require("./globals.js");
+const { currentList } = require("./globals.js");
 const players = new Map();
 
 io.on("connection", (socket) => {
@@ -88,6 +89,9 @@ io.on("connection", (socket) => {
       // populate the actual list of categories:
       // (use math)
       // BOOKMARK
+      const startIndex = (globals.currentListNumber-1) * globals.CATERGORIES_PER_LIST
+      globals.currentCatergories = require("./catergories").originalCatergories.slice(startIndex, startIndex+globals.CATERGORIES_PER_LIST);
+      console.log("Categories:", globals.currentCatergories);
     }
 
     // all rounds done

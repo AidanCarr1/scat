@@ -1,4 +1,4 @@
-const orignalCatergories = [
+const originalCatergories = [
 
 // LIST 1
 "A boy’s name", 
@@ -181,6 +181,6 @@ const moreCatergories = [
 ""];
 
 module.exports = {
-    orignalCatergories,
+    originalCatergories,
     moreCatergories
 };

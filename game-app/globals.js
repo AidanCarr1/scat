@@ -7,7 +7,8 @@ currentRound = 0;
 listOrder = [];
 currentLetter = '$';
 currentListNumber = 0;
-currentList = [];
+currentCatergories = [];
+CATERGORIES_PER_LIST = 12;
 
 
 module.exports = {
@@ -17,6 +18,7 @@ module.exports = {
   listOrder,
   currentLetter,
   currentListNumber,
-  currentList
+  currentCatergories,
+  CATERGORIES_PER_LIST
 
 };
