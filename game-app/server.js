@@ -86,12 +86,19 @@ io.on("connection", (socket) => {
       globals.currentListNumber = globals.listOrder[globals.currentRound-1];
       console.log("Using List ", globals.currentListNumber);
       
-      // populate the actual list of categories:
-      // (use math)
-      // BOOKMARK
+      // populate the actual list of categories (with math)
       const startIndex = (globals.currentListNumber-1) * globals.CATERGORIES_PER_LIST
       globals.currentCatergories = require("./catergories").originalCatergories.slice(startIndex, startIndex+globals.CATERGORIES_PER_LIST);
       console.log("Categories:", globals.currentCatergories);
+
+      io.emit("playRound", {
+        round: globals.currentRound,
+        letter: globals.currentLetter,
+        listNumber: globals.currentListNumber,
+        categories: globals.currentCatergories,
+        timeLimit: globals.timeLimit,
+        CATERGORIES_PER_LIST: globals.CATERGORIES_PER_LIST 
+      });
     }
 
     // all rounds done

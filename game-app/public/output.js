@@ -61,3 +61,21 @@ socket.on("outputSettings", (settings) => {
     document.getElementById("setRounds").value = settings.rounds;
     document.getElementById("setTimeLimit").value = settings.timeLimit;
 });
+
+// a new round is starting
+socket.on("playRound", (data) => {
+
+    // populate the data
+    for (let i = 1; i <= data.CATERGORIES_PER_LIST; i++) {
+        document.getElementById("cat"+i).innerHTML = data.categories[i-1];
+    }
+    document.getElementById("round").innerHTML = "Round " + data.round;
+    document.getElementById("listNumber").innerHTML = "List " + data.listNumber;
+    document.getElementById("letter").innerHTML = "Letter: " + data.letter;
+    document.getElementById("timeDisplay").innerHTML = "0:"+data.timeLimit;
+
+    // reveal!
+    document.getElementById("settings").style.display = "none";
+    document.getElementById("notePad").style.display = "block";
+    // document.getElementById("log").innerHTML += `<li>--- Round ${data.round} ---</li>`; 
+});
