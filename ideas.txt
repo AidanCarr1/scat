@@ -18,6 +18,8 @@ SETTINGS LIST
 [y] time limit
 [ ] toggle custom prompts
 [?] number of prompts (keep classic 12)
+[ ] classic dice vs every letter
+[?] HOUSE RULES: toggle classic rules like double points can be have no limit, maybe you can repeat your own words
 
 DICE ROLL
 [ ] animation?
