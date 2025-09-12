@@ -149,7 +149,7 @@ const originalCategories = [
 "Words associated with money",
 "Items in a vending machine",
 "Movie titles",
-"Games v",
+"Games",
 "Things that you wear",
 "Beverages",
 "Things at a circus",

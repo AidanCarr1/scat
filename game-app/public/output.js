@@ -50,11 +50,6 @@ socket.on("gameStarted", (starterName) => {
     }
 });
 
-// a player answered
-// update this one
-socket.on("answerReceived", (data) => {
-    document.getElementById("log").innerHTML += `<li>${data.player}: ${data.answer}</li>`;
-});
 
 // a player updated settings
 socket.on("outputSettings", (settings) => {
@@ -68,14 +63,36 @@ socket.on("playRound", (data) => {
     // populate the data
     for (let i = 1; i <= data.CATEGORIES_PER_LIST; i++) {
         document.getElementById("cat"+i).innerHTML = data.categories[i-1];
+        // delete previous answers
+        document.getElementById("ans"+i).value = "";
     }
     document.getElementById("round").innerHTML = "Round " + data.round;
     document.getElementById("listNumber").innerHTML = "List " + data.listNumber;
     document.getElementById("letter").innerHTML = "Letter: " + data.letter;
     document.getElementById("timeDisplay").innerHTML = "0:"+data.timeLimit;
 
-    // reveal!
+    // hide everything and reveal the notepad!
     document.getElementById("settings").style.display = "none";
+    document.getElementById("vote").style.display = "none";
+    //hide leaderboard
     document.getElementById("notePad").style.display = "block";
-    // document.getElementById("log").innerHTML += `<li>--- Round ${data.round} ---</li>`; 
 });
+
+// server says rounds over
+socket.on("endRound", (data) => {
+    // hide the notepad
+    document.getElementById("notePad").style.display = "none";
+
+    // gather all answers
+    answers = {};
+    for (let i = 1; i <= data.CATEGORIES_PER_LIST; i++) {
+        answers[i-1] = document.getElementById("ans"+i).value;
+    }
+
+    // send the answers to the server
+    socket.emit("submitAnswers", answers);
+
+    // TEMPORARY
+    document.getElementById("vote").style.display = "block";
+});
+

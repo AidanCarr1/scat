@@ -20,6 +20,9 @@ const { currentListNumber } = require("./globals.js");
 const { currentList } = require("./globals.js");
 const players = new Map();
 
+// Round timer
+let secondTimer = null;
+
 io.on("connection", (socket) => {
   console.log("a user connected:", socket.id);
 
@@ -99,12 +102,39 @@ io.on("connection", (socket) => {
         timeLimit: globals.timeLimit,
         CATEGORIES_PER_LIST: globals.CATEGORIES_PER_LIST 
       });
+
+      // SERVER TIMER
+      // console.log("Begin timer");
+      // let timeLeft = globals.timeLimit;
+      // if (secondTimer) clearTimeout(secondTimer); // Clear any previous timer
+
+      // secondTimer = setInterval(() => {
+      //   io.emit("timerTick", timeLeft); // Send current time to all clients
+      //   console.log(timeLeft);
+      //   timeLeft--;
+
+      //   if (timeLeft < 0) {
+      //     clearInterval(secondTimer);
+      //     io.emit("endRound");
+      //     console.log("Round timer ended!");
+      //   }
+      // }, 1000);
+
+      // // timer done
+      // io.emit("endRound");
+      // console.log("Round timer ended!");
     }
 
     // all rounds done
     else {
       console.log("Game over!");
     }
+  });
+
+  // BOOKMARK
+  socket.on("submitAnswers", (answers) => {
+    console.log(`Answers from ${socket.playerName}:`, answers);
+    // Here you can add logic to store or process the answers as needed
   });
 
 
