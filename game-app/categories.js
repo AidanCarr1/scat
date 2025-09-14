@@ -176,9 +176,9 @@ const moreCategories = [
 "Something that is green",
 "Something to do at a party",
 "A board game",
-"Party themes",
+"Party themes"
 
-""];
+];
 
 module.exports = {
     originalCategories,

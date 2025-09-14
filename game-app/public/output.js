@@ -1,12 +1,3 @@
-// Handle server response/updates to user
-
-// not needed:
-// socket.on("playerJoined", (name) => {
-//   document.getElementById("playerList").innerHTML = "";
-//   for (const li of document.getElementById("playerList").children) {
-//     document.getElementById("playerList").innerHTML += `<li>${name}</li>`;
-//   }
-// });
 
 // the player list has been updated, update locally
 socket.on("playerList", (names) => {
@@ -17,6 +8,7 @@ socket.on("playerList", (names) => {
         ul.innerHTML += `<li>${name}</li>`;
     }
 });
+
 
 // the player count has been updated, update locally
 socket.on("playerCount", (size) => {
@@ -29,6 +21,7 @@ socket.on("playerCount", (size) => {
         document.getElementById("startBtn").disabled = true;
     }
 });
+
 
 // a player started the game, begin
 socket.on("gameStarted", (starterName) => {
@@ -51,11 +44,30 @@ socket.on("gameStarted", (starterName) => {
 });
 
 
+// update the timer given seconds (0-120)
+function updateTimer(secondsLeft) {
+    
+    // separate min and sec
+    let minutes = Math.floor(secondsLeft/60);
+    let seconds = secondsLeft - 60 * minutes;
+
+    // add a zero
+    if (seconds < 10) {
+        document.getElementById("timeDisplay").innerText = `${minutes}:0${seconds}`;
+    }
+    // no zero needed
+    else {
+        document.getElementById("timeDisplay").innerText = `${minutes}:${seconds}`;
+    }
+}
+
+
 // a player updated settings
 socket.on("outputSettings", (settings) => {
     document.getElementById("setRounds").value = settings.rounds;
     document.getElementById("setTimeLimit").value = settings.timeLimit;
 });
+
 
 // a new round is starting
 socket.on("playRound", (data) => {
@@ -66,33 +78,54 @@ socket.on("playRound", (data) => {
         // delete previous answers
         document.getElementById("ans"+i).value = "";
     }
-    document.getElementById("round").innerHTML = "Round " + data.round;
+    document.getElementById("round").innerHTML = `Round ${data.round} of ${data.maxRounds}`;
     document.getElementById("listNumber").innerHTML = "List " + data.listNumber;
     document.getElementById("letter").innerHTML = "Letter: " + data.letter;
-    document.getElementById("timeDisplay").innerHTML = "0:"+data.timeLimit;
+    updateTimer(data.timeLimit);
 
     // hide everything and reveal the notepad!
     document.getElementById("settings").style.display = "none";
     document.getElementById("vote").style.display = "none";
-    //hide leaderboard
+    //hide leaderboard here
+
     document.getElementById("notePad").style.display = "block";
 });
+
+
+// server updates time
+socket.on("timerTick", (secondsLeft) => {
+    updateTimer(secondsLeft);
+});
+
 
 // server says rounds over
 socket.on("endRound", (data) => {
     // hide the notepad
     document.getElementById("notePad").style.display = "none";
 
-    // gather all answers
-    answers = {};
-    for (let i = 1; i <= data.CATEGORIES_PER_LIST; i++) {
-        answers[i-1] = document.getElementById("ans"+i).value;
-    }
-
-    // send the answers to the server
-    socket.emit("submitAnswers", answers);
-
     // TEMPORARY
     document.getElementById("vote").style.display = "block";
+
+
+    // gather all answers
+    let answers = Array(data.CATEGORIES_PER_LIST).fill("");
+    for (let i = 1; i <= data.CATEGORIES_PER_LIST; i++) {
+        
+        // get the answer boxes
+        let answerElement = document.getElementById("ans"+i);
+        let answer = ""; 
+        
+        // if something is actually written, store that
+        if (answerElement && answerElement.value && answerElement.value.trim() !== "") {
+            answer = answerElement.value.trim();
+        }
+        answers[i-1] = answer;
+    }
+    document.getElementById("yourAnswers").innerText = answers.join(",");
+
+    // send the answers to the server
+    //socket.emit("submitAnswers", answers);
+
+    
 });
 

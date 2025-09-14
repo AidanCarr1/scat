@@ -76,7 +76,7 @@ io.on("connection", (socket) => {
     }
 
     // note the round number
-    console.log("Start round", globals.currentRound);
+    console.log("Start round", globals.currentRound, "of", globals.maxRounds);
     
     // if we sill have more rounds to play
     if (globals.currentRound <= globals.maxRounds) {
@@ -95,34 +95,34 @@ io.on("connection", (socket) => {
       console.log("Categories:", globals.currentCategories);
 
       io.emit("playRound", {
-        round: globals.currentRound,
-        letter: globals.currentLetter,
-        listNumber: globals.currentListNumber,
-        categories: globals.currentCategories,
-        timeLimit: globals.timeLimit,
-        CATEGORIES_PER_LIST: globals.CATEGORIES_PER_LIST 
+        round:                globals.currentRound,
+        maxRounds:            globals.maxRounds,
+        letter:               globals.currentLetter,
+        listNumber:           globals.currentListNumber,
+        categories:           globals.currentCategories,
+        timeLimit:            globals.timeLimit,
+        CATEGORIES_PER_LIST:  globals.CATEGORIES_PER_LIST 
       });
 
       // SERVER TIMER
-      // console.log("Begin timer");
-      // let timeLeft = globals.timeLimit;
-      // if (secondTimer) clearTimeout(secondTimer); // Clear any previous timer
+      console.log("Begin timer");
+      let timeLeft = globals.timeLimit;
+      // let timeLeft = 5; // TEMPORARY SHORT TIMER
+      if (secondTimer) clearTimeout(secondTimer); // Clear any previous timer
 
-      // secondTimer = setInterval(() => {
-      //   io.emit("timerTick", timeLeft); // Send current time to all clients
-      //   console.log(timeLeft);
-      //   timeLeft--;
+      secondTimer = setInterval(() => {
+        io.emit("timerTick", timeLeft); // Send current time to all clients
+        console.log(timeLeft);
+        timeLeft--;
 
-      //   if (timeLeft < 0) {
-      //     clearInterval(secondTimer);
-      //     io.emit("endRound");
-      //     console.log("Round timer ended!");
-      //   }
-      // }, 1000);
+        // TIMER DONE
+        if (timeLeft < 0) {
+          clearInterval(secondTimer);
+          io.emit("endRound", { CATEGORIES_PER_LIST: globals.CATEGORIES_PER_LIST });
+          console.log("Round timer ended!");
+        }
+      }, 1000);
 
-      // // timer done
-      // io.emit("endRound");
-      // console.log("Round timer ended!");
     }
 
     // all rounds done
