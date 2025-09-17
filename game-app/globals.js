@@ -10,15 +10,21 @@ currentListNumber = 0;
 currentCategories = [];
 CATEGORIES_PER_LIST = 12;
 
+// gameplay
+roundAnswers = new Map();
+
+
 
 module.exports = {
   maxRounds,
   timeLimit,
+  
   currentRound,
   listOrder,
   currentLetter,
   currentListNumber,
   currentCategories,
-  CATEGORIES_PER_LIST
+  CATEGORIES_PER_LIST,
 
+  roundAnswers
 };

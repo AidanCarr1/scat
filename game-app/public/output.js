@@ -85,7 +85,7 @@ socket.on("playRound", (data) => {
 
     // hide everything and reveal the notepad!
     document.getElementById("settings").style.display = "none";
-    document.getElementById("vote").style.display = "none";
+    document.getElementById("timesUp").style.display = "none";
     //hide leaderboard here
 
     document.getElementById("notePad").style.display = "block";
@@ -103,8 +103,8 @@ socket.on("endRound", (data) => {
     // hide the notepad
     document.getElementById("notePad").style.display = "none";
 
-    // TEMPORARY
-    document.getElementById("vote").style.display = "block";
+    // TEMPORARY?
+    document.getElementById("timesUp").style.display = "block";
 
 
     // gather all answers
@@ -121,10 +121,12 @@ socket.on("endRound", (data) => {
         }
         answers[i-1] = answer;
     }
+    
     document.getElementById("yourAnswers").innerText = answers.join(",");
-
+    
     // send the answers to the server
-    //socket.emit("submitAnswers", answers);
+    //const name = window.localName;
+    socket.emit("submitAnswers", answers);
 
     
 });

@@ -26,6 +26,7 @@ let secondTimer = null;
 io.on("connection", (socket) => {
   console.log("a user connected:", socket.id);
 
+  // player joined
   socket.on("joinGame", (name) => {
     socket.playerName = name; // store players name
     players.set(socket.id, name); // add player on join
@@ -35,23 +36,28 @@ io.on("connection", (socket) => {
     io.emit("playerList", Array.from(players.values())); // Send full list
   });
 
-  socket.on("sendAnswer", (answer) => {
-    console.log("Answer:", answer);
-    io.emit("answerReceived", { player: socket.playerName, answer });
-  });
+  // NOT NEEDED
+  // socket.on("sendAnswer", (answer) => {
+  //   console.log("Answer:", answer);
+  //   io.emit("answerReceived", { player: socket.playerName, answer });
+  // });
 
+  // player leaves
   socket.on("disconnect", () => {
     players.delete(socket.id); // Remove player on disconnect
     console.log("user disconnected:", socket.id);
     io.emit("playerCount", players.size); // Send updated count to all clients
     io.emit("playerList", Array.from(players.values())); // Update list
+    // add more here in the future for cleanups
   });
 
+  // someone starts game
   socket.on("startGame", (name) => {
     console.log("Game started by", name);
     io.emit("gameStarted", name);
   });
 
+  // change the settings
   socket.on("inputSettings", (settings) => {
     console.log("Settings saved:", settings);
 
@@ -63,9 +69,13 @@ io.on("connection", (socket) => {
     io.emit("outputSettings", settings);
   });
 
+  // next round
   socket.on("nextRound", () => {
     globals.currentRound++;
     // round 1, 2, 3, 4...
+
+    // reset answers from previous round
+    globals.roundAnswers.clear();
 
     // first round
     if (globals.currentRound === 1) {
@@ -115,7 +125,7 @@ io.on("connection", (socket) => {
         console.log(timeLeft);
         timeLeft--;
 
-        // TIMER DONE
+        // timer done
         if (timeLeft < 0) {
           clearInterval(secondTimer);
           io.emit("endRound", { CATEGORIES_PER_LIST: globals.CATEGORIES_PER_LIST });
@@ -131,10 +141,23 @@ io.on("connection", (socket) => {
     }
   });
 
-  // BOOKMARK
-  socket.on("submitAnswers", (answers) => {
-    console.log(`Answers from ${socket.playerName}:`, answers);
-    // Here you can add logic to store or process the answers as needed
+  // players submit their answers
+  socket.on("submitAnswers", answers => {
+    console.log(`Answers from ${socket.playerName} [${socket.id}] recieved:`, answers);
+
+    // add answers to server-side answers map
+    globals.roundAnswers.set(socket.playerName, answers);
+    
+    // debug print all answers so far
+    console.log("Current answer map:");
+    for (const [player, answers] of globals.roundAnswers.entries()) {
+      console.log(`${player}:`, answers);
+    }
+
+    // recieved all players' answers
+    if (globals.roundAnswers.size === players.size) {
+
+    }
   });
 
 
