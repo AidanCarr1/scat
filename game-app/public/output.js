@@ -131,3 +131,41 @@ socket.on("endRound", (data) => {
     
 });
 
+// recieve all the answers
+socket.on("beginVote", (entriesArray) => {
+
+    //alert("Voting time!");
+    // reconstruct to a map
+    const allAnswers = new Map(entriesArray);
+
+    let voteHTML = "";
+
+    for (const [player, playerAnswers] of allAnswers.entries()) {
+        voteHTML += `<h4>${player}</h4> <ul>`;
+        for (const answer of playerAnswers) {
+            let displayAnswer = answer === "" ? "$none$" : answer;
+            voteHTML += `<li>${displayAnswer}</li>`;
+        }
+        voteHTML += "</ul>";
+        // voteHTML += "player,";
+    }
+
+    //let text = " ";
+    // for (const player in answers) {
+    //     text += player;
+    //     for (const answer in answers[player]) {
+    //         if (answers[player] === "") {
+    //             text+= "$no answer provided$,";
+    //         }
+    //         else {
+    //             text+= answer;
+    //         }
+    //     }
+    // }
+    document.getElementById("voteText").innerHTML = voteHTML;
+    //alert(voteHTML);
+
+    //show voting screen
+    document.getElementById("timesUp").style.display = "none";
+    document.getElementById("vote").style.display = "block";
+});

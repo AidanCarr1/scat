@@ -16,15 +16,15 @@ roundAnswers = new Map();
 
 
 module.exports = {
-  maxRounds,
-  timeLimit,
-  
-  currentRound,
-  listOrder,
-  currentLetter,
-  currentListNumber,
-  currentCategories,
-  CATEGORIES_PER_LIST,
+    maxRounds,
+    timeLimit,
 
-  roundAnswers
+    currentRound,
+    listOrder,
+    currentLetter,
+    currentListNumber,
+    currentCategories,
+    CATEGORIES_PER_LIST,
+
+    roundAnswers
 };
