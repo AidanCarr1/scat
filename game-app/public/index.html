@@ -19,10 +19,10 @@
 
       <button id="startBtn" onclick="startGame()" style="display:none;">Start Game</button>
 
-      <div id="answerSection" style="display:none;">
+      <!-- <div id="answerSection" style="display:none;">
         <input id="answer" placeholder="Your answer" />
         <button id="answerBtn" onclick="sendAnswer()">Send</button>
-      </div>
+      </div> -->
 
       <p id="playerCount">Players: 0</p>
       <ul id="playerList"></ul>
@@ -101,11 +101,17 @@
       <p id="yourAnswers">answers here</p>
     </div>
 
-    <div id="vote" style="display: none;">
+    <div id="voteTemp" style="display: none;">
       <button id="nextRound" onclick="nextRound()">Next Round</button>
       <div id="voteText">
         <p>all answers here</p>
       </div>
+    </div>
+
+    <div id="vote" style="display: none;">
+      <h3 id="category"></h3>
+      <ul id="answers"></ul>
+      <button id="nextCat" onclick="nextCategory()">Next Category</button>
     </div>
 
 

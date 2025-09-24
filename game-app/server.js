@@ -167,6 +167,12 @@ io.on("connection", (socket) => {
         }
     });
 
+    // player hit "next category" button
+    socket.on("nextCategory", data => {
+        // category counter ++
+        io.emit("showNextCategory");
+    });
+
 
 });
 

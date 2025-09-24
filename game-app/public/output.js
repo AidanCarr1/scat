@@ -3,7 +3,7 @@
 socket.on("playerList", (names) => {
     const ul = document.getElementById("playerList");
     ul.innerHTML = "";
-    window.localState.playerNames = names; // Store globally
+    window.localState.playerNames = names; // store locally
     for (const name of names) {
         ul.innerHTML += `<li>${name}</li>`;
     }
@@ -96,7 +96,8 @@ socket.on("playRound", (data) => {
     // hide everything and reveal the notepad!
     document.getElementById("settings").style.display = "none";
     document.getElementById("timesUp").style.display = "none";
-    //hide leaderboard here
+    document.getElementById("voteTemp").style.display = "none";
+    //document.getElementById("leaderboard").style.display = "none";
 
     document.getElementById("notePad").style.display = "block";
 });
@@ -166,6 +167,10 @@ socket.on("beginVote", (entriesArray) => {
 
     //show voting screen
     document.getElementById("timesUp").style.display = "none";
-    document.getElementById("vote").style.display = "block";
+    document.getElementById("voteTemp").style.display = "block";
 });
 
+// a player hit next category
+socket.on("showNextCategory", data => {
+    
+});

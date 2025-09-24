@@ -9,12 +9,12 @@ window.localState = {
     timeLimit: 0,
 
     // current round data
-    round: 0,
-    listNumber: 0,
+    round: 0, //1-10
+    listNumber: 0, //1-12
     categories: [],
-    letter: "",
-    listNumber: 0,
+    letter: "", //"A"-"W"
     answers: [],
+    categoryCounter: 0, //1-12
     
     // score board
     score: 0

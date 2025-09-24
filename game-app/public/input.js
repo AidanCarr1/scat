@@ -3,16 +3,26 @@
 // you joined the game, tell the server
 function joinGame() {
 
-    //check for an actual name:
-    if (document.getElementById("name").value.trim() === "") {
+    const cleanName = document.getElementById("name").value.trim();
+
+    // check for an actual name:
+    if (cleanName === "") {
         alert("Please enter a name.");
         return;
     }
 
+    // check for duplicates
+    for (player of window.localState.playerNames) {
+        if (cleanName === player) {
+            alert("Name already in use.");
+            return;
+        }
+    }
+
     // tell server your name
-    const name = document.getElementById("name").value;
-    window.localState.name = name; // Store globally
-    socket.emit("joinGame", name);
+    //const name = document.getElementById("name").value;
+    window.localState.name = cleanName; // Store globally
+    socket.emit("joinGame", cleanName);
 
     // disable name input
     document.getElementById("nameSection").style.display = "none";
@@ -43,8 +53,12 @@ function nextRound() {
 }
 
 // you sent an answer, tell the server
-function sendAnswer() {
-    const answer = document.getElementById("answer").value;
-    socket.emit("sendAnswer", answer);
-    document.getElementById("answer").value = "";
+// function sendAnswer() {
+//     const answer = document.getElementById("answer").value;
+//     socket.emit("sendAnswer", answer);
+//     document.getElementById("answer").value = "";
+// }
+
+function nextCategory(){
+    socket.emit("nextCategory");
 }
