@@ -11,7 +11,7 @@ function joinGame() {
 
     // tell server your name
     const name = document.getElementById("name").value;
-    window.localName = name; // Store globally
+    window.localState.name = name; // Store globally
     socket.emit("joinGame", name);
 
     // disable name input
@@ -23,8 +23,8 @@ function joinGame() {
 
 // you started the game, tell the server
 function startGame() {
-    const name = document.getElementById("name").value;
-    socket.emit("startGame", name);
+    //const name = document.getElementById("name").value;
+    socket.emit("startGame", window.localState.name);
 }
 
 // tell server settings numbers

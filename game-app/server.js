@@ -116,8 +116,8 @@ io.on("connection", (socket) => {
 
             // SERVER TIMER
             console.log("Begin timer");
-            //let timeLeft = globals.timeLimit;
-            let timeLeft = 5; // TEMPORARY SHORT TIMER
+            let timeLeft = globals.timeLimit;
+            // let timeLeft = 5; // TEMPORARY SHORT TIMER
             if (secondTimer) clearTimeout(secondTimer); // Clear any previous timer
 
             secondTimer = setInterval(() => {
@@ -163,7 +163,7 @@ io.on("connection", (socket) => {
                 // send over ALL the answers (convert to Array)
                 io.emit("beginVote", Array.from(globals.roundAnswers.entries()));
 
-            }, 3000); // 3 seconds of debrief time
+            }, 5000); // 5 seconds of debrief time
         }
     });
 

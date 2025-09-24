@@ -3,7 +3,7 @@
 socket.on("playerList", (names) => {
     const ul = document.getElementById("playerList");
     ul.innerHTML = "";
-    window.playerNames = names; // Store globally
+    window.localState.playerNames = names; // Store globally
     for (const name of names) {
         ul.innerHTML += `<li>${name}</li>`;
     }
@@ -33,7 +33,7 @@ socket.on("gameStarted", (starterName) => {
     document.getElementById("answerSection").style.display = "block";
 
     // can only EDIT settings if this client is the starter
-    if (window.localName === starterName) {
+    if (window.localState.name === starterName) {
         document.getElementById("setRounds").disabled = false;
         document.getElementById("setTimeLimit").disabled = false;
         document.getElementById("saveSettings").disabled = false;
@@ -65,14 +65,17 @@ function updateTimer(secondsLeft) {
 // a player updated settings
 socket.on("outputSettings", (settings) => {
     document.getElementById("setRounds").value = settings.rounds;
+    window.localState.maxRounds = settings.rounds;
+
     document.getElementById("setTimeLimit").value = settings.timeLimit;
+    window.localState.timeLimit = settings.timeLimit;
 });
 
 
 // a new round is starting
 socket.on("playRound", (data) => {
 
-    // populate the data
+    // populate the VISUAL data
     for (let i = 1; i <= data.CATEGORIES_PER_LIST; i++) {
         document.getElementById("cat"+i).innerHTML = data.categories[i-1];
         // delete previous answers
@@ -82,6 +85,13 @@ socket.on("playRound", (data) => {
     document.getElementById("listNumber").innerHTML = "List " + data.listNumber;
     document.getElementById("letter").innerHTML = "Letter: " + data.letter;
     updateTimer(data.timeLimit);
+
+    // populate the LOCAL STATE data
+    window.localState.categories = data.categories;
+    window.localState.answers = [];
+    window.localState.round = data.round;
+    window.localState.listNumber = data.listNumber;
+    window.localState.letter = data.letter;
 
     // hide everything and reveal the notepad!
     document.getElementById("settings").style.display = "none";
@@ -103,9 +113,8 @@ socket.on("endRound", (data) => {
     // hide the notepad
     document.getElementById("notePad").style.display = "none";
 
-    // TEMPORARY?
+    // debrief screen
     document.getElementById("timesUp").style.display = "block";
-
 
     // gather all answers
     let answers = Array(data.CATEGORIES_PER_LIST).fill("");
@@ -125,47 +134,38 @@ socket.on("endRound", (data) => {
     document.getElementById("yourAnswers").innerText = answers.join(",");
     
     // send the answers to the server
-    //const name = window.localName;
     socket.emit("submitAnswers", answers);
-
-    
 });
+
 
 // recieve all the answers
 socket.on("beginVote", (entriesArray) => {
 
-    //alert("Voting time!");
     // reconstruct to a map
     const allAnswers = new Map(entriesArray);
 
     let voteHTML = "";
 
+    // TEMPORARY show everyones answers
     for (const [player, playerAnswers] of allAnswers.entries()) {
         voteHTML += `<h4>${player}</h4> <ul>`;
+        let i = 0;
         for (const answer of playerAnswers) {
-            let displayAnswer = answer === "" ? "$none$" : answer;
-            voteHTML += `<li>${displayAnswer}</li>`;
+            voteHTML += "<li>";
+            // say category
+            voteHTML += `${window.localState.categories[i]}: `;
+            i++;
+            // say answer (if there is one)
+            let displayAnswer = answer === "" ? "--" : answer;
+            voteHTML += `${displayAnswer}</li>`;
         }
         voteHTML += "</ul>";
-        // voteHTML += "player,";
     }
 
-    //let text = " ";
-    // for (const player in answers) {
-    //     text += player;
-    //     for (const answer in answers[player]) {
-    //         if (answers[player] === "") {
-    //             text+= "$no answer provided$,";
-    //         }
-    //         else {
-    //             text+= answer;
-    //         }
-    //     }
-    // }
     document.getElementById("voteText").innerHTML = voteHTML;
-    //alert(voteHTML);
 
     //show voting screen
     document.getElementById("timesUp").style.display = "none";
     document.getElementById("vote").style.display = "block";
 });
+
