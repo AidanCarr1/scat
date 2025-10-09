@@ -1,5 +1,14 @@
 // Send user data to the server
 
+// User can press enter after their name
+var enterName = document.getElementById("name");
+enterName.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    document.getElementById("nameBtn").click();
+  }
+});
+
 // you joined the game, tell the server
 function joinGame() {
 

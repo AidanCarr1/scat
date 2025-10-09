@@ -200,14 +200,16 @@ socket.on("outputNextCategory", data => {
 });
 
 function nextCategory() {
+//ERROR HANDLING
 try{
-    // remove previous highlight
-    //prevAnswerElement.classList.add("highlight");
+
+    // first, remove previous highlight
     if(window.localState.categoryCounter>=0){
         const prevAnswerElement = document.getElementById("myAnswer"+window.localState.categoryCounter);
         prevAnswerElement.classList.remove("highlight");
-    }//
+    }
 
+    // now move to the next category
     window.localState.categoryCounter ++;
 
     // update category
