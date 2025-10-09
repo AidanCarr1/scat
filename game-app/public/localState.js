@@ -16,7 +16,7 @@ window.localState = {
     letter: "", //"A"-"W"
     myAnswers: [],
     categoryCounter: -1, //0-11
-    //allAnswers,
+    allAnswers: null,
     
     // score board
     score: 0

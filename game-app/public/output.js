@@ -151,6 +151,7 @@ socket.on("beginVote", (entriesArray) => {
 
     // reconstruct alll answers to a map
     const allAnswers = new Map(entriesArray);
+    window.localState.allAnswers = allAnswers;
 
     // let voteHTML = "";
 
@@ -168,7 +169,9 @@ socket.on("beginVote", (entriesArray) => {
     //         voteHTML += `${displayAnswer}</li>`;
     //     }
     //     voteHTML += "</ul>";
-    // }
+    // }    
+    // document.getElementById("voteText").innerHTML = voteHTML;
+
 
     // show your own answers
     let myAnswersText = "";
@@ -180,7 +183,9 @@ socket.on("beginVote", (entriesArray) => {
 
     nextCategory();
 
-    //document.getElementById("voteText").innerHTML = voteHTML;
+    // switch buttons back (next cat, hide next round)
+    document.getElementById("nextRoundBtn").style.display = "none";
+    document.getElementById("nextCatBtn").style.display = "block";
 
     //show voting screen
     document.getElementById("timesUp").style.display = "none";
@@ -199,13 +204,26 @@ function nextCategory() {
 
     // update category
     document.getElementById("category").innerText = window.localState.categories[window.localState.categoryCounter];
+    
     // show user and their answer
+    let answersHTML = "";
+    for (const [player, answers] of window.localState.allAnswers) {
+        answersHTML += `<li>${player}: ${answers[window.localState.categoryCounter]}</li>`;
+        // add vote button here
+    }
+    document.getElementById("answers").innerHTML = answersHTML;
 
-    // Things with spots
-    // aidan: salamnder
-    // bob: Sponge
-    // carl: --
-    // denise: spotted snake
+
     // voting buttons (WHAT DO THOSE EVEN LOOK LIKE? HOW DO THOSE WORK?)
     // update a highlighted current cat in my answers
+
+    // final cat? change next cat button to next round
+    if (window.localState.categoryCounter >= window.localState.CATEGORIES_PER_LIST-1) {
+        document.getElementById("nextRoundBtn").style.display = "block";
+        document.getElementById("nextCatBtn").style.display = "none";
+        // TO DO: maybe dont show NEXT ROUND but show DISPLAY LEADERBOARD
+        // and then on leaderboard have the next round button
+        // I think having a host will work best. then an ability to switch hosts if wanted.
+        
+    }
 }
