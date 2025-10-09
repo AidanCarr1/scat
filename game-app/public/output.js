@@ -155,7 +155,7 @@ socket.on("beginVote", (entriesArray) => {
 
     // let voteHTML = "";
 
-    // TEMPORARY show everyones answers
+    // CODE REFERENCE show everyones answers
     // for (const [player, playerAnswers] of allAnswers.entries()) {
     //     voteHTML += `<h4>${player}</h4> <ul>`;
     //     let i = 0;
@@ -176,7 +176,7 @@ socket.on("beginVote", (entriesArray) => {
     // show your own answers
     let myAnswersText = "";
     for (let i=0; i<window.localState.CATEGORIES_PER_LIST; i++) {
-        myAnswersText += `<li>${window.localState.categories[i]}: ${window.localState.myAnswers[i]}</li>`;
+        myAnswersText += `<li id='myAnswer${i}'>${window.localState.categories[i]}: ${window.localState.myAnswers[i]}</li>`;
     }    
     //myAnswersText += "</ul>";
     document.getElementById("myAnswers").innerHTML = myAnswersText;
@@ -200,6 +200,14 @@ socket.on("outputNextCategory", data => {
 });
 
 function nextCategory() {
+try{
+    // remove previous highlight
+    //prevAnswerElement.classList.add("highlight");
+    if(window.localState.categoryCounter>=0){
+        const prevAnswerElement = document.getElementById("myAnswer"+window.localState.categoryCounter);
+        prevAnswerElement.classList.remove("highlight");
+    }//
+
     window.localState.categoryCounter ++;
 
     // update category
@@ -209,13 +217,15 @@ function nextCategory() {
     let answersHTML = "";
     for (const [player, answers] of window.localState.allAnswers) {
         answersHTML += `<li>${player}: ${answers[window.localState.categoryCounter]}</li>`;
-        // add vote button here
+        // add vote button here 
+        // (WHAT DO THOSE EVEN LOOK LIKE? HOW DO THOSE WORK?)
     }
     document.getElementById("answers").innerHTML = answersHTML;
 
-
-    // voting buttons (WHAT DO THOSE EVEN LOOK LIKE? HOW DO THOSE WORK?)
     // update a highlighted current cat in my answers
+    const myAnswerElement = document.getElementById("myAnswer"+window.localState.categoryCounter);
+    myAnswerElement.classList.add("highlight");
+
 
     // final cat? change next cat button to next round
     if (window.localState.categoryCounter >= window.localState.CATEGORIES_PER_LIST-1) {
@@ -224,6 +234,12 @@ function nextCategory() {
         // TO DO: maybe dont show NEXT ROUND but show DISPLAY LEADERBOARD
         // and then on leaderboard have the next round button
         // I think having a host will work best. then an ability to switch hosts if wanted.
-        
+
     }
+}catch(err){
+//ERROR HANDLING
+document.getElementById("errorBox").innerText = "Error: " + err;  
+};
 }
+
+

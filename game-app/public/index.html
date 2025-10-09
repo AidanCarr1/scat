@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
-  <head><title>Scat</title></head>
+  <head>
+    <title>Scat</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
   <body>
-
+    <p id="errorBox" style="color:brown"></p>
     
     <div id="lobby">
 
@@ -40,8 +43,8 @@
       <input type="number" id="setRounds" value="3" min="1" max="10" disabled="true">
       <br>
       <label for="setTimeLimit">Time Limit (seconds):</label>
-      <!-- min should be 30 in final product            min="30"  -->
-      <input type="number" id="setTimeLimit" value="60" min="5" max="120" step="5" disabled="true">
+      <!-- change values in final product    value="60" min="30"  -->
+      <input type="number" id="setTimeLimit" value="5" min="5" max="120" step="5" disabled="true">
       <br>
       <button id="saveSettings" onclick="inputSettings()" disabled="true">Update Settings</button>
       <button id="startRound" onclick="nextRound()" disabled="true">Start Round</button>
@@ -126,6 +129,8 @@
 
 
 
+
+    
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="localState.js"></script>
