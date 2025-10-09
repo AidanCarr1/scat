@@ -30,9 +30,10 @@ socket.on("gameStarted", (starterName) => {
     document.getElementById("settings").style.display = "block";
     document.getElementById("gameStarter").innerHTML = "Game started by " + starterName;
     document.getElementById("startBtn").style.display = "none";
-    document.getElementById("answerSection").style.display = "block";
+    //document.getElementById("answerSection").style.display = "block";
 
     // can only EDIT settings if this client is the starter
+    //alert(window.localState.name + " =?" + starterName);
     if (window.localState.name === starterName) {
         document.getElementById("setRounds").disabled = false;
         document.getElementById("setTimeLimit").disabled = false;
@@ -88,7 +89,7 @@ socket.on("playRound", (data) => {
 
     // populate the LOCAL STATE data
     window.localState.categories = data.categories;
-    window.localState.answers = [];
+    window.localState.myAnswers = [];
     window.localState.round = data.round;
     window.localState.listNumber = data.listNumber;
     window.localState.letter = data.letter;
@@ -97,6 +98,7 @@ socket.on("playRound", (data) => {
     document.getElementById("settings").style.display = "none";
     document.getElementById("timesUp").style.display = "none";
     document.getElementById("voteTemp").style.display = "none";
+    document.getElementById("vote").style.display = "none";
     //document.getElementById("leaderboard").style.display = "none";
 
     document.getElementById("notePad").style.display = "block";
@@ -110,7 +112,7 @@ socket.on("timerTick", (secondsLeft) => {
 
 
 // server says rounds over
-socket.on("endRound", (data) => {
+socket.on("endRound", () => {
     // hide the notepad
     document.getElementById("notePad").style.display = "none";
 
@@ -118,8 +120,8 @@ socket.on("endRound", (data) => {
     document.getElementById("timesUp").style.display = "block";
 
     // gather all answers
-    let answers = Array(data.CATEGORIES_PER_LIST).fill("");
-    for (let i = 1; i <= data.CATEGORIES_PER_LIST; i++) {
+    let answers = Array(window.localState.CATEGORIES_PER_LIST).fill("");
+    for (let i = 1; i <= window.localState.CATEGORIES_PER_LIST; i++) {
         
         // get the answer boxes
         let answerElement = document.getElementById("ans"+i);
@@ -132,7 +134,9 @@ socket.on("endRound", (data) => {
         answers[i-1] = answer;
     }
     
-    document.getElementById("yourAnswers").innerText = answers.join(",");
+    // store locally and print
+    window.localState.myAnswers = answers;
+    //document.getElementById("yourAnswers").innerText = answers.join(",");
     
     // send the answers to the server
     socket.emit("submitAnswers", answers);
@@ -142,35 +146,66 @@ socket.on("endRound", (data) => {
 // recieve all the answers
 socket.on("beginVote", (entriesArray) => {
 
-    // reconstruct to a map
+    // reset category counter
+    window.localState.categoryCounter = -1; //0-11
+
+    // reconstruct alll answers to a map
     const allAnswers = new Map(entriesArray);
 
-    let voteHTML = "";
+    // let voteHTML = "";
 
     // TEMPORARY show everyones answers
-    for (const [player, playerAnswers] of allAnswers.entries()) {
-        voteHTML += `<h4>${player}</h4> <ul>`;
-        let i = 0;
-        for (const answer of playerAnswers) {
-            voteHTML += "<li>";
-            // say category
-            voteHTML += `${window.localState.categories[i]}: `;
-            i++;
-            // say answer (if there is one)
-            let displayAnswer = answer === "" ? "--" : answer;
-            voteHTML += `${displayAnswer}</li>`;
-        }
-        voteHTML += "</ul>";
-    }
+    // for (const [player, playerAnswers] of allAnswers.entries()) {
+    //     voteHTML += `<h4>${player}</h4> <ul>`;
+    //     let i = 0;
+    //     for (const answer of playerAnswers) {
+    //         voteHTML += "<li>";
+    //         // say category
+    //         voteHTML += `${window.localState.categories[i]}: `;
+    //         i++;
+    //         // say answer (if there is one)
+    //         let displayAnswer = answer === "" ? "--" : answer;
+    //         voteHTML += `${displayAnswer}</li>`;
+    //     }
+    //     voteHTML += "</ul>";
+    // }
 
-    document.getElementById("voteText").innerHTML = voteHTML;
+    // show your own answers
+    let myAnswersText = "";
+    for (let i=0; i<window.localState.CATEGORIES_PER_LIST; i++) {
+        myAnswersText += `<li>${window.localState.categories[i]}: ${window.localState.myAnswers[i]}</li>`;
+    }    
+    //myAnswersText += "</ul>";
+    document.getElementById("myAnswers").innerHTML = myAnswersText;
+
+    nextCategory();
+
+    //document.getElementById("voteText").innerHTML = voteHTML;
 
     //show voting screen
     document.getElementById("timesUp").style.display = "none";
-    document.getElementById("voteTemp").style.display = "block";
+    //document.getElementById("voteTemp").style.display = "block";
+    document.getElementById("vote").style.display = "block";
+
 });
 
-// a player hit next category
-socket.on("showNextCategory", data => {
-    
+// server says "a player hit next category"
+socket.on("outputNextCategory", data => {
+    nextCategory();
 });
+
+function nextCategory() {
+    window.localState.categoryCounter ++;
+
+    // update category
+    document.getElementById("category").innerText = window.localState.categories[window.localState.categoryCounter];
+    // show user and their answer
+
+    // Things with spots
+    // aidan: salamnder
+    // bob: Sponge
+    // carl: --
+    // denise: spotted snake
+    // voting buttons (WHAT DO THOSE EVEN LOOK LIKE? HOW DO THOSE WORK?)
+    // update a highlighted current cat in my answers
+}

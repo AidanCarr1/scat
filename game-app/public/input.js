@@ -59,6 +59,6 @@ function nextRound() {
 //     document.getElementById("answer").value = "";
 // }
 
-function nextCategory(){
-    socket.emit("nextCategory");
+function inputNextCategory(){
+    socket.emit("inputNextCategory");
 }

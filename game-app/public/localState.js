@@ -12,9 +12,11 @@ window.localState = {
     round: 0, //1-10
     listNumber: 0, //1-12
     categories: [],
+    CATEGORIES_PER_LIST: 12,
     letter: "", //"A"-"W"
-    answers: [],
-    categoryCounter: 0, //1-12
+    myAnswers: [],
+    categoryCounter: -1, //0-11
+    //allAnswers,
     
     // score board
     score: 0

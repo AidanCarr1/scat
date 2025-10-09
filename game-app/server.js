@@ -128,7 +128,7 @@ io.on("connection", (socket) => {
                 // timer done
                 if (timeLeft < 0) {
                     clearInterval(secondTimer);
-                    io.emit("endRound", { CATEGORIES_PER_LIST: globals.CATEGORIES_PER_LIST });
+                    io.emit("endRound", {  });
                     console.log("Round timer ended!");
                 }
             }, 1000);
@@ -163,14 +163,15 @@ io.on("connection", (socket) => {
                 // send over ALL the answers (convert to Array)
                 io.emit("beginVote", Array.from(globals.roundAnswers.entries()));
 
-            }, 5000); // 5 seconds of debrief time
+            }, 500); // 5 seconds of debrief time
+            // temporary half sec, change back to 5000
         }
     });
 
-    // player hit "next category" button
-    socket.on("nextCategory", data => {
+    // player input/pushed "next category" button
+    socket.on("inputNextCategory", data => {
         // category counter ++
-        io.emit("showNextCategory");
+        io.emit("outputNextCategory");
     });
 
 
