@@ -13,6 +13,9 @@ CATEGORIES_PER_LIST = 12;
 // gameplay
 roundAnswers = new Map();
 
+// players
+hostName = "";
+
 
 
 module.exports = {
@@ -26,5 +29,7 @@ module.exports = {
     currentCategories,
     CATEGORIES_PER_LIST,
 
-    roundAnswers
+    roundAnswers,
+
+    hostName
 };

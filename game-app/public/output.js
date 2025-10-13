@@ -33,13 +33,17 @@ socket.on("gameStarted", (starterName) => {
     //document.getElementById("answerSection").style.display = "block";
 
     // can only EDIT settings if this client is the starter
-    //alert(window.localState.name + " =?" + starterName);
     if (window.localState.name === starterName) {
         document.getElementById("setRounds").disabled = false;
         document.getElementById("setTimeLimit").disabled = false;
         document.getElementById("saveSettings").disabled = false;
         document.getElementById("startRound").disabled = false;
-    } else {
+
+        // store isHost value locally
+        window.localState.isHost = true;
+    } 
+    // no privileges for LOSERS
+    else {
         //document.getElementById("settings").style.display = "none";
     }
 });
@@ -186,11 +190,21 @@ socket.on("beginVote", (entriesArray) => {
     // switch buttons back (next cat, hide next round)
     document.getElementById("nextRoundBtn").style.display = "none";
     document.getElementById("nextCatBtn").style.display = "block";
+    // hide the end button just incase
+    document.getElementById("theEndBtn").style.display = "none";
 
-    //show voting screen
+    // show voting screen
     document.getElementById("timesUp").style.display = "none";
     //document.getElementById("voteTemp").style.display = "block";
     document.getElementById("vote").style.display = "block";
+
+    // host gets button privileges
+    if (window.localState.isHost) {
+        document.getElementById("nextCatBtn").disabled = false;
+        document.getElementById("nextRoundBtn").disabled = false;
+        document.getElementById("theEndBtn").disabled = false;
+    }
+
 
 });
 
@@ -231,8 +245,17 @@ try{
 
     // final cat? change next cat button to next round
     if (window.localState.categoryCounter >= window.localState.CATEGORIES_PER_LIST-1) {
-        document.getElementById("nextRoundBtn").style.display = "block";
         document.getElementById("nextCatBtn").style.display = "none";
+
+        // final round!
+        if (window.localState.maxRounds == window.localState.round) {
+            document.getElementById("theEndBtn").style.display = "block";
+        }
+        // more to go
+        else {
+            document.getElementById("nextRoundBtn").style.display = "block";
+        }
+        
         // TO DO: maybe dont show NEXT ROUND but show DISPLAY LEADERBOARD
         // and then on leaderboard have the next round button
         // I think having a host will work best. then an ability to switch hosts if wanted.

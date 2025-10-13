@@ -116,8 +116,10 @@
     <div id="vote" style="display: none;">
       <h3 id="category"></h3>
       <ul id="answers"></ul>
-      <button id="nextCatBtn" onclick="inputNextCategory()">Next Category</button>
-      <button id="nextRoundBtn" onclick="nextRound()" style="display: none;">Next Round</button>      
+      <button id="nextCatBtn" onclick="inputNextCategory()" disabled="true">Next Category</button>
+      <button id="nextRoundBtn" onclick="nextRound()" style="display: none;" disabled="true">Next Round</button>      
+      <button id="theEndBtn" onclick="theEnd()" style="display: none;" disabled="true">Show Final Results</button>      
+
       <h3>My answers</h3>
       <ul id="myAnswers"></ul>
     </div>

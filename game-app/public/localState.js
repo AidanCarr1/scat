@@ -3,6 +3,7 @@ window.localState = {
     // players
     name: "",
     playerNames: [],
+    isHost: false,
 
     // settings
     maxRounds: 0,

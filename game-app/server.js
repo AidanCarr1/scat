@@ -53,7 +53,11 @@ io.on("connection", (socket) => {
 
     // someone starts game
     socket.on("startGame", (name) => {
-        console.log("Game started by", name);
+        // create host
+        globals.hostName = name;
+        console.log("Game started by", globals.hostName);
+
+        // tell players
         io.emit("gameStarted", name);
     });
 
