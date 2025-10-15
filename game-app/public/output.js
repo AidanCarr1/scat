@@ -241,7 +241,8 @@ try{
         // TO DO add a class to separate the buttons more
         if (window.localState.isHost) {
             answersHTML += `<div id="buttons_player${playerNum}_cat${catNum}">`;
-            answersHTML += `<input type="radio"  id=   "no_player${playerNum}_cat${catNum}" name="vote_player${playerNum}"       >No</button>&nbsp;`;
+            // note all the way down there   -->                   -->                   -->                   -->     if theres no answer, automatically select "no"
+            answersHTML += `<input type="radio"  id=   "no_player${playerNum}_cat${catNum}" name="vote_player${playerNum}" ${answers[catNum]===""?"checked":""}       >No</button>&nbsp;`;
             answersHTML += `<input type="radio"  id=  "yes_player${playerNum}_cat${catNum}" name="vote_player${playerNum}"       >Yes</button>&nbsp;`;
             answersHTML += `<input type="radio"  id="extra_player${playerNum}_cat${catNum}" name="vote_player${playerNum}"       >Extra</button>&nbsp;`;
             answersHTML += `<input type="button" id= "vote_player${playerNum}_cat${catNum}" name="vote_player${playerNum}" value="Vote"></button>`;

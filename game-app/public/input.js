@@ -69,5 +69,36 @@ function nextRound() {
 // }
 
 function inputNextCategory(){
+    // POINT SYSTEM HERE
+    let playerNum = 0;
+    pointArray = [];
+    for (const [player] of window.localState.allAnswers) {
+
+        // save long HTML button name
+        button = `_player${playerNum}_cat${window.localState.categoryCounter}`;
+        
+        //check for a yes
+        if (document.getElementById("yes"+button).checked) {
+            //alert(player + " +1");
+            pointArray[playerNum] = 1;
+        }
+        //check for extra point
+        else if (document.getElementById("extra"+button).checked) {
+            //alert(player + " +2");
+            pointArray[playerNum] = 2;
+        }
+        //check for a no
+        else if (document.getElementById("no"+button).checked) {
+            //alert(player + " +0");
+            pointArray[playerNum] = 0;
+        }
+        else {
+            alert(player + " no selection");
+            return;
+        }
+        playerNum ++;
+    }
+
+    //socket.emit("addPoints");
     socket.emit("inputNextCategory");
 }
