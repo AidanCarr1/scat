@@ -9,6 +9,7 @@ currentLetter = '$';
 currentListNumber = 0;
 currentCategories = [];
 CATEGORIES_PER_LIST = 12;
+categoryCounter = 0;
 
 // gameplay
 roundAnswers = new Map();
@@ -28,6 +29,7 @@ module.exports = {
     currentListNumber,
     currentCategories,
     CATEGORIES_PER_LIST,
+    categoryCounter,
 
     roundAnswers,
 

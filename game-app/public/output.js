@@ -225,16 +225,31 @@ try{
 
     // now move to the next category
     window.localState.categoryCounter ++;
+    // shorter name for repetition purposes
+    const catNum = window.localState.categoryCounter;
 
     // update category
-    document.getElementById("category").innerText = window.localState.categories[window.localState.categoryCounter];
+    document.getElementById("category").innerText = window.localState.categories[catNum];
     
     // show user and their answer
     let answersHTML = "";
+    let playerNum = 0;
     for (const [player, answers] of window.localState.allAnswers) {
-        answersHTML += `<li>${player}: ${answers[window.localState.categoryCounter]}</li>`;
-        // add vote button here 
-        // (WHAT DO THOSE EVEN LOOK LIKE? HOW DO THOSE WORK?)
+        answersHTML += `<li>${player}: ${answers[catNum]}`;
+        
+        // host vote buttons 
+        // TO DO add a class to separate the buttons more
+        if (window.localState.isHost) {
+            answersHTML += `<div id="buttons_player${playerNum}_cat${catNum}">`;
+            answersHTML += `<input type="radio"  id=   "no_player${playerNum}_cat${catNum}" name="vote_player${playerNum}"       >No</button>&nbsp;`;
+            answersHTML += `<input type="radio"  id=  "yes_player${playerNum}_cat${catNum}" name="vote_player${playerNum}"       >Yes</button>&nbsp;`;
+            answersHTML += `<input type="radio"  id="extra_player${playerNum}_cat${catNum}" name="vote_player${playerNum}"       >Extra</button>&nbsp;`;
+            answersHTML += `<input type="button" id= "vote_player${playerNum}_cat${catNum}" name="vote_player${playerNum}" value="Vote"></button>`;
+            answersHTML += "</div></li>";
+        }
+
+        // next player
+        playerNum ++;
     }
     document.getElementById("answers").innerHTML = answersHTML;
 

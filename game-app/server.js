@@ -163,7 +163,10 @@ io.on("connection", (socket) => {
 
             // give the players some "debrief time"
             setTimeout(() => {
-                
+                // reset category counter
+                globals.categoryCounter = 0;
+                console.log(`Category ${globals.categoryCounter}`)
+
                 // send over ALL the answers (convert to Array)
                 io.emit("beginVote", Array.from(globals.roundAnswers.entries()));
 
@@ -174,7 +177,9 @@ io.on("connection", (socket) => {
 
     // player input/pushed "next category" button
     socket.on("inputNextCategory", data => {
-        // category counter ++
+        // increment category counter
+        globals.categoryCounter ++;
+        console.log(`Category ${globals.categoryCounter}`)
         io.emit("outputNextCategory");
     });
 
