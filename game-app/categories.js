@@ -180,7 +180,28 @@ const moreCategories = [
 
 ];
 
+const halloweenCategories = [
+"Couple costumes",
+"Halloween movies",
+"Horror movies",
+"Candy",
+"Monster or villain",
+"Things in a haunted house",
+"Something scary",
+"Fears",
+"Halloween activity",
+"Spooky place",
+"Something black",
+"Something orange",
+"Things you see at night",
+"Popular costumes",
+"Things that are sharp",
+"Something dead",
+"Weapons"
+]
+
 module.exports = {
     originalCategories,
-    moreCategories
+    moreCategories,
+    halloweenCategories
 };

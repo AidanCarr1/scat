@@ -19,6 +19,7 @@ const { glob } = require("fs");
 const { currentListNumber } = require("./globals.js");
 const { currentList } = require("./globals.js");
 const players = new Map();
+const playerPoints = new Map(); // key: playerName, value: score
 
 // Round timer
 let secondTimer = null;
@@ -30,6 +31,7 @@ io.on("connection", (socket) => {
     socket.on("joinGame", (name) => {
         socket.playerName = name; // store players name
         players.set(socket.id, name); // add player on join
+        playerPoints.set(name, 0); // players start with 0 points
         console.log(`${name} joined`);
         // socket.broadcast.emit("playerJoined", name); // not needed?
         io.emit("playerCount", players.size); // Send updated count to all clients
@@ -87,6 +89,13 @@ io.on("connection", (socket) => {
             // shuffle list order
             globals.listOrder = require("./game").getRandomListOrder();
             console.log("List order:", globals.listOrder);
+        }
+        //show updated scores
+        else {
+            console.log("Scores:");
+            for (const [player, score] of playerPoints.entries()) {
+                console.log(`${player}: ${score}`);
+            }
         }
 
         // note the round number
@@ -181,6 +190,21 @@ io.on("connection", (socket) => {
         globals.categoryCounter ++;
         console.log(`Category ${globals.categoryCounter}`)
         io.emit("outputNextCategory");
+    });
+
+
+    // points have been added
+    socket.on("addPoints", data => {
+        const playerArray = data.playerArray;
+        const pointArray = data.pointArray;
+        for (let i = 0; i < playerArray.length; i++) {
+            const player = playerArray[i];
+            const points = pointArray[i];
+            const current = playerPoints.get(player) || 0;
+            playerPoints.set(player, current + points);
+        }
+        // Optionally emit updated scores to clients
+        // io.emit("updateScores", Array.from(playerPoints.entries()));
     });
 
 

@@ -71,7 +71,8 @@ function nextRound() {
 function inputNextCategory(){
     // POINT SYSTEM HERE
     let playerNum = 0;
-    pointArray = [];
+    let pointArray = [];
+    let playerArray = [];
     for (const [player] of window.localState.allAnswers) {
 
         // save long HTML button name
@@ -96,9 +97,10 @@ function inputNextCategory(){
             alert(player + " no selection");
             return;
         }
+        playerArray[playerNum] = player;
         playerNum ++;
     }
 
-    //socket.emit("addPoints");
+    socket.emit("addPoints", {playerArray, pointArray});
     socket.emit("inputNextCategory");
 }

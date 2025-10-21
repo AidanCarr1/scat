@@ -13,6 +13,7 @@ categoryCounter = 0;
 
 // gameplay
 roundAnswers = new Map();
+//scores = new Map();
 
 // players
 hostName = "";
@@ -32,6 +33,7 @@ module.exports = {
     categoryCounter,
 
     roundAnswers,
+    //scores,
 
     hostName
 };
