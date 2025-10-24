@@ -106,12 +106,13 @@
         -->
     </div>
 
+<!--     
     <div id="voteTemp" style="display: none;">
       <button id="nextRound" onclick="nextRound()">Next Round</button>
       <div id="voteText">
         <p>all answers here</p>
       </div>
-    </div>
+    </div> -->
 
     <!-- edits here TEMPORARY -->
     <div id="vote" style="display: none;">
@@ -134,15 +135,18 @@
       </ul>
       <button id="nextCatBtn" onclick="inputNextCategory()" disabled="true">Next Category</button>
       <!-- TO DO change to 'show leaderboard' button -->
-      <button id="nextRoundBtn" onclick="nextRound()" style="display: none;" disabled="true">Next Round</button>      
-      <button id="theEndBtn" onclick="theEnd()" style="display: none;" disabled="true">Show Final Results</button>      
+      <!-- <button id="nextRoundBtn" onclick="nextRound()" style="display: none;" disabled="true">Next Round</button>       -->
+      <button id="showLeaderboardBtn" onclick="inputShowLeaderboard()" style="display: none;" disabled="true">Show Leaderboard</button>
+      <!-- <button id="theEndBtn" onclick="theEnd()" style="display: none;" disabled="true">Show Final Results</button>       -->
 
       <h3>My answers</h3>
       <ul id="myAnswers"></ul>
     </div>
 
     <div id="leaderboard" style="display:none;">
-            <button id="nextRoundBtn" onclick="nextRound()" style="display: none;" disabled="true">Next Round</button>      
+      <p id="allScores">Scores will go here, check log.</p>
+      <button id="nextRoundBtn" onclick="nextRound()" disabled="true">Next Round</button>   
+      <button id="resetBtn" style="display:none;">TEMP reset button</button>      
 
     </div>
 

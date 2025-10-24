@@ -101,9 +101,9 @@ socket.on("playRound", (data) => {
     // hide everything and reveal the notepad!
     document.getElementById("settings").style.display = "none";
     document.getElementById("timesUp").style.display = "none";
-    document.getElementById("voteTemp").style.display = "none";
+    //document.getElementById("voteTemp").style.display = "none";
     document.getElementById("vote").style.display = "none";
-    //document.getElementById("leaderboard").style.display = "none";
+    document.getElementById("leaderboard").style.display = "none";
 
     document.getElementById("notePad").style.display = "block";
 });
@@ -188,10 +188,11 @@ socket.on("beginVote", (entriesArray) => {
     nextCategory();
 
     // switch buttons back (next cat, hide next round)
-    document.getElementById("nextRoundBtn").style.display = "none";
+    // document.getElementById("nextRoundBtn").style.display = "none";
+    document.getElementById("showLeaderboardBtn").style.display = "none";
     document.getElementById("nextCatBtn").style.display = "block";
     // hide the end button just incase
-    document.getElementById("theEndBtn").style.display = "none";
+    // document.getElementById("theEndBtn").style.display = "none";
 
     // show voting screen
     document.getElementById("timesUp").style.display = "none";
@@ -201,8 +202,9 @@ socket.on("beginVote", (entriesArray) => {
     // host gets button privileges
     if (window.localState.isHost) {
         document.getElementById("nextCatBtn").disabled = false;
-        document.getElementById("nextRoundBtn").disabled = false;
-        document.getElementById("theEndBtn").disabled = false;
+        //document.getElementById("nextRoundBtn").disabled = false;
+        document.getElementById("showLeaderboardBtn").disabled = false;
+        // document.getElementById("theEndBtn").disabled = false;
     }
 
 
@@ -265,12 +267,15 @@ try{
 
         // final round!
         if (window.localState.maxRounds == window.localState.round) {
-            document.getElementById("theEndBtn").style.display = "block";
+            // document.getElementById("theEndBtn").style.display = "block";
+            //change leaderbaord name to FINAL results
+            document.getElementById("showLeaderboardBtn").innerText = "Show FINAL results";
         }
         // more to go
-        else {
-            document.getElementById("nextRoundBtn").style.display = "block";
-        }
+        //else {
+            //document.getElementById("nextRoundBtn").style.display = "block";
+            document.getElementById("showLeaderboardBtn").style.display = "block";
+        //}
         
         // TO DO: maybe dont show NEXT ROUND but show DISPLAY LEADERBOARD
         // and then on leaderboard have the next round button
@@ -283,4 +288,34 @@ document.getElementById("errorBox").innerText = "Error: " + err;
 };
 }
 
+socket.on("broadcastScores", (scores) => {
 
+    // show leaderboard div
+    document.getElementById("leaderboard").style.display = "block";
+    document.getElementById("vote").style.display = "none";
+
+
+    // if game is over
+    if (window.localState.maxRounds == window.localState.round) {
+        // write final scores
+        // TO DO add names
+        document.getElementById("allScores").innerText = "FINAL Scores: "+scores;
+        document.getElementById("nextRoundBtn").style.display = "none";
+
+        // TO DO show a reset button
+        document.getElementById("resetBtn").style.display = "block";
+    }
+
+    // more rounds to play
+    else {
+        // write current scores
+        // TO DO add names
+        document.getElementById("allScores").innerText = "Scores: "+scores;
+
+        // host can click next round
+        if (window.localState.isHost) {
+            document.getElementById("nextRoundBtn").disabled = false;
+        }
+    }
+    
+});

@@ -59,6 +59,14 @@ function nextRound() {
     // update setting one last time
     inputSettings();
     socket.emit("nextRound");
+
+    // hide leaderboard
+    document.getElementById("leaderboard").display = "none";
+}
+
+function inputShowLeaderboard() {
+    // document.getElementById("leaderboard").display = "block";
+    socket.emit("getScores");
 }
 
 // you sent an answer, tell the server

@@ -92,17 +92,18 @@ io.on("connection", (socket) => {
         }
         //show updated scores
         else {
-            console.log("Scores:");
-            for (const [player, score] of playerPoints.entries()) {
-                console.log(`${player}: ${score}`);
-            }
+            // console.log("Scores:");
+            // for (const [player, score] of playerPoints.entries()) {
+            //     console.log(`${player}: ${score}`);
+            // }
         }
 
-        // note the round number
-        console.log("Start round", globals.currentRound, "of", globals.maxRounds);
-        
+
         // if we sill have more rounds to play
         if (globals.currentRound <= globals.maxRounds) {
+            
+            // note the round number
+            console.log("\nStart round", globals.currentRound, "of", globals.maxRounds);
 
             // roll the die
             globals.currentLetter = require("./game").rollDie();
@@ -150,7 +151,7 @@ io.on("connection", (socket) => {
 
         // all rounds done
         else {
-            console.log("Game over!");
+            console.log("No more rounds. Game over!");
         }
     });
 
@@ -165,7 +166,7 @@ io.on("connection", (socket) => {
         if (globals.roundAnswers.size === players.size) {
 
             // reveal answer map
-            console.log("All answers are in");
+            console.log("\nAll answers are in");
             for (const [player, answers] of globals.roundAnswers.entries()) {
                 console.log(`${player}:`, answers);
             }
@@ -205,6 +206,21 @@ io.on("connection", (socket) => {
         }
         // Optionally emit updated scores to clients
         // io.emit("updateScores", Array.from(playerPoints.entries()));
+    });
+
+    // send all scores to all players
+    socket.on("getScores", () => {
+
+        
+        let scores = [];
+        console.log(`\nRound ${globals.currentRound} scores:`);
+
+        for (const [player, score] of playerPoints.entries()) {
+            console.log(`${player}: ${score}`);
+            scores.push(score);
+        }
+
+        io.emit("broadcastScores", scores);
     });
 
 
