@@ -21,6 +21,22 @@ const { currentList } = require("./globals.js");
 const players = new Map();
 const playerPoints = new Map(); // key: playerName, value: score
 
+// combining all data into one class
+const PlayerData = require('./public/playerData.js');
+
+const playerObjects = [
+    new PlayerData(0, "aidan", ["blah", "blah"], 13, false),
+    new PlayerData(1, "paul", ["a", "b", "c"], 7, true),
+    new PlayerData(2, "mary anne", ["1", "", "3"], 0, false)
+];
+
+// Accessing player info
+console.log(playerObjects[0].name);      // "aidan"
+console.log(playerObjects[1].isHost);    // true
+console.log(playerObjects[2].answers);   // ["1", "", "3"]
+
+
+
 // Round timer
 let secondTimer = null;
 
