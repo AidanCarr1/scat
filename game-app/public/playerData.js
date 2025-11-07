@@ -5,8 +5,8 @@ class PlayerData {
                 answers = [], 
                 points = 0, 
                 isHost = false, 
-                isActive = false) {
-                    
+                isActive = true) {
+
         this.id = id;
         this.name = name;
         this.answers = answers; // Array of answers

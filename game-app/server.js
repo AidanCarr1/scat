@@ -33,25 +33,17 @@ _Directory.newPlayer("Aidan");
 _Directory.newPlayer("Jake");
 _Directory.newPlayer("Todd");
 
-console.log(_Directory.getIdByName("Jake"));
-console.log(_Directory.getIdByName("Todd"));
-console.log(_Directory.getIdByName("Aidan"));
+// console.log(_Directory.getIdByName("Aidan"));
+// console.log(_Directory.getIdByName("Jake"));
+// console.log(_Directory.getIdByName("Todd"));
 
+console.log("Host:", _Directory.whoIsHost());
+_Directory.appointHostByName("Aidan");
+console.log("Host:", _Directory.whoIsHost());
 
-
-// Code works:
-// Make test players
-// const playerObjects = [
-//     new PlayerData(0, "aidan", ["blah", "blah"], 13, false),
-//     new PlayerData(1, "paul", ["a", "b", "c"], 7, true),
-//     new PlayerData(2, "mary anne", ["1", "", "3"], 0, false)
-// ];
-
-// // Accessing player info
-// console.log(playerObjects[0].name);      // "aidan"
-// console.log(playerObjects[1].isHost);    // true
-// console.log(playerObjects[2].answers);   // ["1", "", "3"]
-
+console.log(_Directory.getInfoByName("Aidan"));
+console.log(_Directory.getInfoByName("Jake"));
+console.log(_Directory.getInfoByName("Todd"));
 
 
 // Round timer
@@ -70,12 +62,6 @@ io.on("connection", (socket) => {
         io.emit("playerCount", players.size); // Send updated count to all clients
         io.emit("playerList", Array.from(players.values())); // Send full list
     });
-
-    // NOT NEEDED
-    // socket.on("sendAnswer", (answer) => {
-    // console.log("Answer:", answer);
-    // io.emit("answerReceived", { player: socket.playerName, answer });
-    // });
 
     // player leaves
     socket.on("disconnect", () => {
