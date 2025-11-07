@@ -1,12 +1,18 @@
-// class that stores all player data locally
+// Class that stores player data
 
 class PlayerData {
-    constructor(id, name, answers = [], points = 0, isHost = false) {
+    constructor(id, name, 
+                answers = [], 
+                points = 0, 
+                isHost = false, 
+                isActive = false) {
+                    
         this.id = id;
         this.name = name;
         this.answers = answers; // Array of answers
         this.points = points;
         this.isHost = isHost;
+        this.isActive = isActive;
     }
 }
 
