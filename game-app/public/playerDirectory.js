@@ -27,6 +27,7 @@ class PlayerDirectory {
     newPlayer(name, /*socket?*/) {
         // Is the name unique?
         if (! this.isNameUnique(name)) {
+            console.log(`Player not created: repeat name '${name}'`);
             return;
         }
 
@@ -98,18 +99,39 @@ class PlayerDirectory {
 
     getInfoByName(name) {
         for (let i=0; i<this.count; i++) {
-            // if given name matches name found in player array, return id/index
+            // if given name matches name found in player array, return info based on id
             if (name === this.players[i].name) {
-                let player = this.players[i];
-                return player.name +
-                        ": #"+player.id +
-                        ", answers{" + player.answers +"}, " +
-                        player.points +" points, " +
-                        (player.isHost?"host":"not host") +", "+
-                        (player.isActive?"active":"not active");
+                return this.getInfoById(i);
+                // let player = this.players[i];
+                // return player.name +
+                //         ": #"+player.id +
+                //         ", answers{" + player.answers +"}, " +
+                //         player.points +" points, " +
+                //         (player.isHost?"host":"not host") +", "+
+                //         (player.isActive?"active":"not active");
             }
         }
         return "Player not found";
+    }
+
+    getInfoById(id) {
+        // Set player and SPILL
+        let player = this.players[id];
+        return player.name +
+                ": #"+player.id +
+                ", answers{" + player.answers +"}, " +
+                player.points +" points, " +
+                (player.isHost?"host":"not host") +", "+
+                (player.isActive?"active":"not active");
+    }
+
+    printAll() {
+        let str = "";
+        for (let i=0; i<this.count; i++) {
+            str += this.getInfoById(i) + "\n";
+        }
+        return str;
+        // BOOK MARK
     }
 
 }

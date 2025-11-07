@@ -32,6 +32,8 @@ _Directory = new PlayerDirectory();
 _Directory.newPlayer("Aidan");
 _Directory.newPlayer("Jake");
 _Directory.newPlayer("Todd");
+_Directory.newPlayer("Jake");
+_Directory.newPlayer("Frank");
 
 // console.log(_Directory.getIdByName("Aidan"));
 // console.log(_Directory.getIdByName("Jake"));
@@ -41,9 +43,15 @@ console.log("Host:", _Directory.whoIsHost());
 _Directory.appointHostByName("Aidan");
 console.log("Host:", _Directory.whoIsHost());
 
-console.log(_Directory.getInfoByName("Aidan"));
-console.log(_Directory.getInfoByName("Jake"));
-console.log(_Directory.getInfoByName("Todd"));
+// console.log(_Directory.getInfoByName("Aidan"));
+// console.log(_Directory.getInfoByName("Jake"));
+// console.log(_Directory.getInfoByName("Todd"));
+console.log(_Directory.printAll());
+console.log();
+_Directory.appointHostByName("Frank");
+console.log(_Directory.printAll());
+
+
 
 
 // Round timer
