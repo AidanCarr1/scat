@@ -23,7 +23,7 @@ const playerPoints = new Map(); // key: playerName, value: score
 
 
 // Player data class
-const PlayerData = require('./public/playerData.js');
+//const PlayerData = require('./public/playerData.js');
 
 // Directory class
 const PlayerDirectory = require('./public/playerDirectory.js');

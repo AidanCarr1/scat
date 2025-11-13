@@ -1,16 +1,24 @@
 // Class that stores all players
 
-
 // Introduce Player Data class
-let PlayerData;
-if (typeof module !== "undefined" && module.exports) {
-  // Node: require the shared class
-  PlayerData = require("./playerData.js");
-} else {
-  // Browser: expect PlayerData to be global (loaded via <script>)
-  PlayerData = window.PlayerData;
-}
+class PlayerData {
+    constructor(id, name, 
+                socketid = 0,
+                answers = [], 
+                points = 0, 
+                isHost = false, 
+                isActive = true
+                ) {
 
+        this.id = id;
+        this.name = name;
+        this.socketid = socketid;
+        this.answers = answers; // Array of answers
+        this.points = points;
+        this.isHost = isHost;
+        this.isActive = isActive;
+    }
+}
 
 class PlayerDirectory {
     constructor() {
@@ -35,6 +43,9 @@ class PlayerDirectory {
         let newPlayerData = new PlayerData(this.count, name, socketid);
         this.players[this.count] = newPlayerData;
         this.count ++;
+
+        //return player object
+        return newPlayerData;
     }
 
     getIdByName(name) {
@@ -154,11 +165,11 @@ class PlayerDirectory {
 
 
 // Allow front end and backend to handle this class
+// Node / CommonJS
 if (typeof module !== "undefined" && module.exports) {
-    // Node / CommonJS
-    module.exports = PlayerDirectory;
+  module.exports = PlayerDirectory;
 } 
+// Browser
 else if (typeof window !== "undefined") {
-    // Browser global
-    window.PlayerDirectory = PlayerDirectory;
+  window.PlayerDirectory = PlayerDirectory;
 }

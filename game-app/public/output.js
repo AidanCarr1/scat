@@ -1,8 +1,36 @@
+// Lazy init: create a directory instance only when PlayerDirectory is available.
+// This avoids timing problems if scripts are reordered or cached.
+// function ensureDirectory() {
+//   if (!window._Directory) {
+//     if (typeof PlayerDirectory !== "undefined") {
+//       window._Directory = new PlayerDirectory();
+//     } else {
+//       // Not available yet — will be created when we first receive playerList
+//       return false;
+//     }
+//   }
+//   return true;
+// }
+
+// // Try to create immediately if possible (usually will be, after reordering scripts)
+// ensureDirectory();
+
+window._Directory = new PlayerDirectory();
+// window._Directory.newPlayer("PLAYER 0");
+// window._Directory.newPlayer("PLAYER 1");
+
 
 // the player list has been updated, update locally
 socket.on("playerList", (names) => {
+    if (names.length == 0) return; // nothing to do
+
     const ul = document.getElementById("playerList");
     ul.innerHTML = "";
+
+    window._Directory.newPlayer(names[names.length-1]);
+    document.getElementById("debugBox").innerText = (window._Directory.printAll());
+    
+
     window.localState.playerNames = names; // store locally
     for (const name of names) {
         ul.innerHTML += `<li>${name}</li>`;
@@ -217,7 +245,7 @@ socket.on("outputNextCategory", data => {
 
 function nextCategory() {
 //ERROR HANDLING
-try{
+//try{
 
     // first, remove previous highlight
     if(window.localState.categoryCounter>=0){
@@ -282,10 +310,10 @@ try{
         // I think having a host will work best. then an ability to switch hosts if wanted.
 
     }
-}catch(err){
+//}catch(err){
 //ERROR HANDLING
-document.getElementById("errorBox").innerText = "Error: " + err;  
-};
+//document.getElementById("errorBox").innerText = "Error: " + err;  
+//};
 }
 
 socket.on("broadcastScores", (scores) => {

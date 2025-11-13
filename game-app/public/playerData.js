@@ -21,4 +21,6 @@ class PlayerData {
 
 if (typeof module !== "undefined" && module.exports) {
     module.exports = PlayerData;
+} else if (typeof window !== "undefined") {
+  window.PlayerData = PlayerData;
 }

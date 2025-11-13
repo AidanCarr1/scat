@@ -3,9 +3,11 @@
   <head>
     <title>Scat</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="/images/logo.png">
   </head>
   <body>
     <p id="errorBox" style="color:brown"></p>
+    <p id="debugBox" style="color:navy"></p>
     
     <div id="lobby">
 
@@ -157,17 +159,21 @@
 
 
 
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="localState.js"></script>
 
-    
+  <!-- shared classes first -->
+  <!-- <script src="playerData.js"></script> -->
+  <script src="playerDirectory.js"></script>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="localState.js"></script>
-    <script src="socket.js"></script>
-    <script src="input.js"></script> 
-    <script src="output.js"></script>
-    <script src="playerData.js"></script>
-    <script src="playerDirectory.js"></script>
-    
+  <!-- then socket connection and app code -->
+  <script src="socket.js"></script>
+  <script src="input.js"></script>
+  <script src="output.js"></script>
+
+  <!-- init directory -->
+  <!-- <script src="initDirectory.js"></script> -->
+
 
   </body>
 </html>
