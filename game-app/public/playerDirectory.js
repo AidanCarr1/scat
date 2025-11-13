@@ -24,15 +24,15 @@ class PlayerDirectory {
         return (id >= 0 && id < this.count && this.players[id].isActive);
     }
 
-    newPlayer(name, /*socket?*/) {
+    newPlayer(name, socketid = 0) {
         // Is the name unique?
         if (! this.isNameUnique(name)) {
             console.log(`Player not created: repeat name '${name}'`);
-            return;
+            return false;
         }
 
         // Create player, store it in directory
-        let newPlayerData = new PlayerData(this.count, name);
+        let newPlayerData = new PlayerData(this.count, name, socketid);
         this.players[this.count] = newPlayerData;
         this.count ++;
     }
@@ -49,8 +49,18 @@ class PlayerDirectory {
 
     getPlayerByName(name) {
         for (let i=0; i<this.count; i++) {
-            // if given name matches name found in player array, return id/index
+            // if given name matches name found in player array, return player
             if (name === this.players[i].name) {
+                return this.players[i];
+            }
+        }
+        return null;
+    }
+
+    getPlayerBySocketId(socketid) {
+        for (let i=0; i<this.count; i++) {
+            // if given socketid matches socketid found in player array, return player
+            if (socketid === this.players[i].socketid) {
                 return this.players[i];
             }
         }
@@ -90,6 +100,11 @@ class PlayerDirectory {
         this.appointHostById(this.getIdByName(newHostName));
     }
 
+    appointHostBySocketId(socketId) {
+        // Get id, appoint host
+        this.appointHostById(this.getPlayerBySocketId(socketId).id);
+    }
+
     whoIsHost() {
         if (this.host) {
             return (this.host.name);
@@ -119,6 +134,7 @@ class PlayerDirectory {
         let player = this.players[id];
         return player.name +
                 ": #"+player.id +
+                " ("+player.socketid+") " +
                 ", answers{" + player.answers +"}, " +
                 player.points +" points, " +
                 (player.isHost?"host":"not host") +", "+

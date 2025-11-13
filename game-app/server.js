@@ -29,29 +29,28 @@ const PlayerData = require('./public/playerData.js');
 const PlayerDirectory = require('./public/playerDirectory.js');
 _Directory = new PlayerDirectory();
 
-_Directory.newPlayer("Aidan");
-_Directory.newPlayer("Jake");
-_Directory.newPlayer("Todd");
-_Directory.newPlayer("Jake");
-_Directory.newPlayer("Frank");
+// Test the directory with players
+// _Directory.newPlayer("Aidan");
+// _Directory.newPlayer("Jake");
+// _Directory.newPlayer("Todd");
+// _Directory.newPlayer("Jake");
+// _Directory.newPlayer("Frank");
 
 // console.log(_Directory.getIdByName("Aidan"));
 // console.log(_Directory.getIdByName("Jake"));
 // console.log(_Directory.getIdByName("Todd"));
 
-console.log("Host:", _Directory.whoIsHost());
-_Directory.appointHostByName("Aidan");
-console.log("Host:", _Directory.whoIsHost());
+// console.log("Host:", _Directory.whoIsHost());
+// _Directory.appointHostByName("Aidan");
+// console.log("Host:", _Directory.whoIsHost());
 
 // console.log(_Directory.getInfoByName("Aidan"));
 // console.log(_Directory.getInfoByName("Jake"));
 // console.log(_Directory.getInfoByName("Todd"));
-console.log(_Directory.printAll());
-console.log();
-_Directory.appointHostByName("Frank");
-console.log(_Directory.printAll());
-
-
+// console.log(_Directory.printAll());
+// console.log();
+// _Directory.appointHostByName("Frank");
+// console.log(_Directory.printAll());
 
 
 // Round timer
@@ -65,8 +64,13 @@ io.on("connection", (socket) => {
         socket.playerName = name; // store players name
         players.set(socket.id, name); // add player on join
         playerPoints.set(name, 0); // players start with 0 points
-        console.log(`${name} joined`);
-        // socket.broadcast.emit("playerJoined", name); // not needed?
+        
+        // add new player to directory
+        _Directory.newPlayer(name, socket.id);
+        //console.log(`${name} joined`);
+        console.log("Player joined:", _Directory.getInfoByName(name));
+
+        // tell all players
         io.emit("playerCount", players.size); // Send updated count to all clients
         io.emit("playerList", Array.from(players.values())); // Send full list
     });
@@ -74,7 +78,17 @@ io.on("connection", (socket) => {
     // player leaves
     socket.on("disconnect", () => {
         players.delete(socket.id); // Remove player on disconnect
-        console.log("user disconnected:", socket.id);
+        //console.log("user disconnected:", socket.id);
+
+        // set player to inactive in directory
+        let leavingPlayer = _Directory.getPlayerBySocketId(socket.id);
+        // if player even joined from this socket
+        if (leavingPlayer) { 
+            leavingPlayer.isActive = false;
+            console.log("Player left:", _Directory.getInfoByName(leavingPlayer.name));
+        }
+
+        // tell all players
         io.emit("playerCount", players.size); // Send updated count to all clients
         io.emit("playerList", Array.from(players.values())); // Update list
         // add more here in the future for cleanups
@@ -85,6 +99,11 @@ io.on("connection", (socket) => {
         // create host
         globals.hostName = name;
         console.log("Game started by", globals.hostName);
+
+        // assign host in directory
+        _Directory.appointHostBySocketId(socket.id);
+        //print all test
+        console.log(_Directory.printAll());
 
         // tell players
         io.emit("gameStarted", name);
