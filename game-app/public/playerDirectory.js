@@ -1,6 +1,5 @@
-// Class that stores all players
 
-// Introduce Player Data class
+// Player Data class
 class PlayerData {
     constructor(id, name, 
                 socketid = 0,
@@ -19,6 +18,8 @@ class PlayerData {
         this.isActive = isActive;
     }
 }
+
+// Player Directory: Class that stores all players
 
 class PlayerDirectory {
     constructor() {
@@ -128,13 +129,7 @@ class PlayerDirectory {
             // if given name matches name found in player array, return info based on id
             if (name === this.players[i].name) {
                 return this.getInfoById(i);
-                // let player = this.players[i];
-                // return player.name +
-                //         ": #"+player.id +
-                //         ", answers{" + player.answers +"}, " +
-                //         player.points +" points, " +
-                //         (player.isHost?"host":"not host") +", "+
-                //         (player.isActive?"active":"not active");
+                
             }
         }
         return "Player not found";

@@ -1,24 +1,5 @@
-// Lazy init: create a directory instance only when PlayerDirectory is available.
-// This avoids timing problems if scripts are reordered or cached.
-// function ensureDirectory() {
-//   if (!window._Directory) {
-//     if (typeof PlayerDirectory !== "undefined") {
-//       window._Directory = new PlayerDirectory();
-//     } else {
-//       // Not available yet — will be created when we first receive playerList
-//       return false;
-//     }
-//   }
-//   return true;
-// }
-
-// // Try to create immediately if possible (usually will be, after reordering scripts)
-// ensureDirectory();
-
+// Create local directory
 window._Directory = new PlayerDirectory();
-// window._Directory.newPlayer("PLAYER 0");
-// window._Directory.newPlayer("PLAYER 1");
-
 
 // the player list has been updated, update locally
 socket.on("playerList", (names) => {

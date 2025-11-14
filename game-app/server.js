@@ -22,9 +22,6 @@ const players = new Map();
 const playerPoints = new Map(); // key: playerName, value: score
 
 
-// Player data class
-//const PlayerData = require('./public/playerData.js');
-
 // Directory class
 const PlayerDirectory = require('./public/playerDirectory.js');
 _Directory = new PlayerDirectory();
@@ -98,7 +95,7 @@ io.on("connection", (socket) => {
     socket.on("startGame", (name) => {
         // create host
         globals.hostName = name;
-        console.log("Game started by", globals.hostName);
+        console.log("\nGame started by", globals.hostName);
 
         // assign host in directory
         _Directory.appointHostBySocketId(socket.id);
