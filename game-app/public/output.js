@@ -1,30 +1,29 @@
-// Create local directory
-window._Directory = new PlayerDirectory();
 
 // the player list has been updated, update locally
 socket.on("playerList", (names) => {
-    if (names.length == 0) return; // nothing to do
 
+    // nothing to do
+    if (names.length == 0) return; 
+    
+    // store locally
+    window.localState.playerNames = names;
+
+    // edit html list
     const ul = document.getElementById("playerList");
     ul.innerHTML = "";
-
-    window._Directory.newPlayer(names[names.length-1]);
-    document.getElementById("debugBox").innerText = (window._Directory.printAll());
-    
-
-    window.localState.playerNames = names; // store locally
     for (const name of names) {
         ul.innerHTML += `<li>${name}</li>`;
     }
-});
 
-
-// the player count has been updated, update locally
-socket.on("playerCount", (size) => {
-    document.getElementById("playerCount").innerHTML = `Players: ${size}`;
+    // dont make directory until GAME START
+        // window._Directory.newPlayer(names[names.length-1]);
+        //document.getElementById("debugBox").innerText = (window._Directory.printAll());
+    
+    // update player count
+    document.getElementById("playerCount").innerHTML = `Players: ${names.length}`;
 
     // all game start if 2+ players
-    if (size >= 2) {
+    if (names.length >= 2) {
         document.getElementById("startBtn").disabled = false;
     } else {
         document.getElementById("startBtn").disabled = true;
@@ -32,8 +31,33 @@ socket.on("playerCount", (size) => {
 });
 
 
+// the player count has been updated, update locally
+// socket.on("playerCount", (size) => {
+//     document.getElementById("playerCount").innerHTML = `Players: ${size}`;
+
+//     // all game start if 2+ players
+//     if (size >= 2) {
+//         document.getElementById("startBtn").disabled = false;
+//     } else {
+//         document.getElementById("startBtn").disabled = true;
+//     }
+// });
+
+
 // a player started the game, begin
-socket.on("gameStarted", (starterName) => {
+socket.on("gameStarted", (data) => {
+
+    starterName = data[0];
+    window.localState.playerNames = data[1];
+    window.localState.socketIds = data[2];
+    // Create local directory
+    window._Directory = new PlayerDirectory();
+
+    // Create players
+    for (const name of window.localState.playerNames) {
+        window._Directory.newPlayer(name);
+    }
+
     document.getElementById("lobby").style.display = "none";
 
     document.getElementById("settings").style.display = "block";

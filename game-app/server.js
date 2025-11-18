@@ -55,6 +55,9 @@ let secondTimer = null;
 
 io.on("connection", (socket) => {
     console.log("a user connected:", socket.id);
+    // instantly catch new players up to speed
+    //io.emit("playerCount", players.size); // Send updated count to all clients
+    io.emit("playerList", Array.from(players.values())); // Send full list
 
     // player joined
     socket.on("joinGame", (name) => {
@@ -68,8 +71,8 @@ io.on("connection", (socket) => {
         console.log("Player joined:", _Directory.getInfoByName(name));
 
         // tell all players
-        io.emit("playerCount", players.size); // Send updated count to all clients
-        io.emit("playerList", Array.from(players.values())); // Send full list
+        //io.emit("playerCount", players.size); // Send updated count to all clients
+        io.emit("playerList", _Directory.getPlayerNameList()); // Send full list
     });
 
     // player leaves
@@ -86,24 +89,26 @@ io.on("connection", (socket) => {
         }
 
         // tell all players
-        io.emit("playerCount", players.size); // Send updated count to all clients
-        io.emit("playerList", Array.from(players.values())); // Update list
+        //io.emit("playerCount", players.size); // Send updated count to all clients
+        io.emit("playerList", _Directory.getPlayerNameList()); // Update list
         // add more here in the future for cleanups
     });
 
     // someone starts game
     socket.on("startGame", (name) => {
         // create host
+
         globals.hostName = name;
         console.log("\nGame started by", globals.hostName);
 
         // assign host in directory
-        _Directory.appointHostBySocketId(socket.id);
+        _Directory.appointHostByName(name);
         //print all test
+
         console.log(_Directory.printAll());
 
         // tell players
-        io.emit("gameStarted", name);
+        io.emit("gameStarted", (name, _Directory.getPlayerNameList(), _Directory.getSocketList()));
     });
 
     // change the settings

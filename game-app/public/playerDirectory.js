@@ -156,6 +156,23 @@ class PlayerDirectory {
         // BOOK MARK
     }
 
+    getPlayerNameList() {
+        let names = [];
+        for (let i=0; i<this.count; i++) {
+            // add something to check active?
+            names[i] = this.players[i].name;
+        }
+        return names;
+    }
+
+    getSocketList() {
+        let sockets = [];
+        for (let i=0; i<this.count; i++) {
+            sockets[i] = this.players[i].socketid;
+        }
+        return names;
+    }
+
 }
 
 
